@@ -49,7 +49,13 @@
                 <button type="button" class="btn btn-primary funciton">
                     QUẢN LÝ NGUYÊN LIỆU
                     <img src="./images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
+                    <i class="fa fa-caret-down"></i>
                 </button>
+                <div class="dropdown-container">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-primary funciton">
