@@ -15,7 +15,7 @@
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dsNcc.css">
-    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -111,7 +111,7 @@
                         int i = 1;
                         for (NhaCungCap nhaCungCap : nhaCungCaps) {
                     %>
-                    <tr>
+                    <tr onclick="window.location='<%=request.getContextPath()%>/nls?ncc_id=<%=nhaCungCap.getId()%>'">
                         <th class="text-center"><%=i++%>
                         </th>
                         <td style="text-align: left;"><%=nhaCungCap.getTen()%>
@@ -119,9 +119,6 @@
                         <td style="text-align: left;"><%=nhaCungCap.getSdt()%>
                         </td>
                         <td class="text-end"><%=nhaCungCap.getDiaChi()%>
-                        </td>
-                        <td class="text-end">
-                            <a href="../DanhSachNguyenLieu/index.html">chi tiết</a>
                         </td>
                     </tr>
                     <%
@@ -143,41 +140,41 @@
                     <button style="background-color: #d6d5d5; border-radius: 50%; font-size: 12px; padding: 7px;
                                 " type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="title-modal-body">Thêm mới nhà cung cấp</div>
-                <div style="padding: 20px 0;">
-                    <b-row style="display: flex; justify-content: space-between;" class="mb-3">
-                        <div style="width: 48%;">
-                            <label for="exampleFormControlInput1" class="form-label">Tên nhà cung cấp</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput2"
-                                   placeholder="Name...">
-                        </div>
-                        <div style="width: 48%;">
-                            <label for="exampleFormControlInput1" class="form-label">Số điện thoại</label>
-                            <input type="text" class="form-control" id="exampleFormControlInput3"
-                                   placeholder="Phone...">
-                        </div>
-                    </b-row>
-                    <b-row>
-                        <div class="mb-6">
-                            <label for="exampleFormControlInput1" class="form-label">Địa chỉ</label>
-                            <input type="email" class="form-control" id="exampleFormControlInput1"
-                                   placeholder="Address...">
-                        </div>
-                    </b-row>
+                <form action="<%=request.getContextPath()%>/nccs-add" name="addProduct" method="post">
+                    <div class="title-modal-body">Thêm mới nhà cung cấp</div>
+                    <div style="padding: 20px 0;">
+                        <b-row style="display: flex; justify-content: space-between;" class="mb-3">
+                            <div style="width: 48%;">
+                                <label for="producerName" class="form-label">Tên nhà cung cấp</label>
+                                <input type="text" name="producerName" class="form-control" id="producerName"
+                                       placeholder="Tên nhà cung cấp...">
+                            </div>
+                            <div style="width: 48%;">
+                                <label for="producerPhone" class="form-label">Số điện thoại</label>
+                                <input type="text" name="producerPhone" class="form-control" id="producerPhone"
+                                       placeholder="Số điện thoại...">
+                            </div>
+                        </b-row>
+                        <b-row>
+                            <div class="mb-6">
+                                <label for="producerAddress" class="form-label">Địa chỉ</label>
+                                <input type="text" name="producerAddress" class="form-control" id="producerAddress"
+                                       placeholder="Địa chỉ...">
+                            </div>
+                        </b-row>
+                    </div>
 
-                </div>
-
-                <div class="control-button" style="text-align: center;">
-                    <button type="button" data-bs-dismiss="modal"
-                            style="padding: 8px 20px; border-radius: 10px; width: 30%; margin-right: 20px;"
-                            class="btn btn-outline-secondary">
-                        Hủy bỏ
-                    </button>
-                    <button type="button" data-bs-dismiss="modal"
-                            style="padding: 8px 20px; border-radius: 10px; width: 30%" class="btn btn-primary">
-                        OK
-                    </button>
-                </div>
+                    <div class="control-button" style="text-align: center;">
+                        <button type="button" data-bs-dismiss="modal"
+                                style="padding: 8px 20px; border-radius: 10px; width: 30%; margin-right: 20px;"
+                                class="btn btn-outline-secondary">
+                            Hủy bỏ
+                        </button>
+                        <input type="submit" value="Ok" data-bs-dismiss="modal"
+                                style="padding: 8px 20px; border-radius: 10px; width: 30%"
+                                class="btn btn-primary">
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -190,4 +187,10 @@
         // $("#footer").load("../../footer.html");
         // document.getElementById('search-null').style.display = 'none';
     });
+
+    function myFunction() {
+            document.getElementById("demo").style.color = "red";
+    }
+
+
 </script>

@@ -36,7 +36,7 @@
         </ol>
       </nav>
       <button type="button" class="btn" style="padding: 0px;">
-        <img src="../../../images/avatarDefault.png" width="50px" height="50px" />
+        <img src="${pageContext.request.contextPath}/images/avatarDefault.png" width="50px" height="50px" />
         <span style="text-align: center;">Hiệp đẹp trai</span>
       </button>
     </div>

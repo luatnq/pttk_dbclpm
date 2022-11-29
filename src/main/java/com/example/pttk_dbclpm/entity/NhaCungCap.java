@@ -16,6 +16,12 @@ public class NhaCungCap {
     this.sdt = sdt;
   }
 
+  public NhaCungCap(String ten, String diaChi, String sdt) {
+    this.ten = ten;
+    this.diaChi = diaChi;
+    this.sdt = sdt;
+  }
+
   public Integer getId() {
     return id;
   }

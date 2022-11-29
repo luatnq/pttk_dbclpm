@@ -29,5 +29,6 @@
         <url-pattern>*.jpg</url-pattern>
         <url-pattern>*.jpeg</url-pattern>
         <url-pattern>*.webp</url-pattern>
+        <url-pattern>*.png</url-pattern>
     </servlet-mapping>
 </web-app>

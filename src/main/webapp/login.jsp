@@ -33,7 +33,7 @@
         <img src="${pageContext.request.contextPath}/images/login_user.png" alt="" class="customImg" style="margin: -50px"/>
     </div>
     <div class="container_2">
-        <form action="<%=request.getContextPath()%>/check_login">
+        <form action="<%=request.getContextPath()%>/check_login" method="post">
             <div class="form-group" style="margin-top: 100px;">
                     <span class="has-float-label">
                         <input type="text" name="username" value="" class="form-control" id="username"
@@ -53,5 +53,26 @@
         </form>
     </div>
 </div>
+
+<%--<script src="${pageContext.request.contextPath}/js/toastr.js"></script>--%>
+<%--<script type="text/javascript">--%>
+<%--    const login = () => {--%>
+<%--        let username = $('#username_lg').val();--%>
+<%--        let password = $('#password_lg').val();--%>
+<%--        $.ajax({--%>
+<%--            url: "/check_login",--%>
+<%--            data: {username: username, password: password},--%>
+<%--            type: 'POST',--%>
+<%--            success: (res) =>{--%>
+<%--                if(res.success){--%>
+<%--                    window.location.replace("http://localhost:8080/home") ;--%>
+<%--                }--%>
+<%--                else{--%>
+<%--                    toastr.error(res.message);--%>
+<%--                }--%>
+<%--            }--%>
+<%--        })--%>
+<%--    }--%>
+<%--</script>--%>
 </body>
 </html>

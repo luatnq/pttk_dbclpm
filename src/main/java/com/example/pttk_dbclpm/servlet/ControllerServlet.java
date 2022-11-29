@@ -14,12 +14,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Objects;
 
 import static com.example.pttk_dbclpm.constant.Constant.Web.NHA_CUNG_CAP_LIST;
 
-//@WebServlet("")
 public class ControllerServlet extends HttpServlet {
 
   private NhanVienDAO nhanVienDAO = new NhanVienDAOImpl();
@@ -53,6 +53,17 @@ public class ControllerServlet extends HttpServlet {
       case "/nccs-search":
         showNhaCungCapList(request, response);
         break;
+      case "/nccs-add":
+        try {
+          luuNcc(request, response);
+        } catch (SQLException e) {
+          throw new RuntimeException(e);
+        }
+        break;
+      case "/nls":
+        showNguyenLieuList(request, response);
+        break;
+
     }
   }
 
@@ -86,5 +97,19 @@ public class ControllerServlet extends HttpServlet {
     HttpSession session = request.getSession();
     session.setAttribute(NHA_CUNG_CAP_LIST, nhaCungCaps);
     request.getRequestDispatcher("GdDanhSachNCC.jsp").forward(request, response);
+  }
+
+  private void luuNcc(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
+    String ten = request.getParameter("producerName");
+    String diaChi = request.getParameter("producerAddress");
+    String sdt = request.getParameter("producerPhone");
+
+    NhaCungCap nhaCungCap = new NhaCungCap(ten, diaChi, sdt);
+    nhaCungCapDAO.luuNcc(nhaCungCap);
+    showNhaCungCapList(request, response);
+  }
+
+  private void showNguyenLieuList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    request.getRequestDispatcher("GdDanhSachNL.jsp").forward(request, response);
   }
 }
