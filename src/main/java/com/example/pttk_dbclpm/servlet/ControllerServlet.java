@@ -1,9 +1,12 @@
 package com.example.pttk_dbclpm.servlet;
 
+import com.example.pttk_dbclpm.dao.NguyenLieuDAO;
 import com.example.pttk_dbclpm.dao.NhaCungCapDAO;
 import com.example.pttk_dbclpm.dao.NhanVienDAO;
+import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NhanVienDAOImpl;
+import com.example.pttk_dbclpm.entity.NguyenLieu;
 import com.example.pttk_dbclpm.entity.NhaCungCap;
 import com.example.pttk_dbclpm.entity.NhanVien;
 import jakarta.servlet.RequestDispatcher;
@@ -15,15 +18,17 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.example.pttk_dbclpm.constant.Constant.Web.NHA_CUNG_CAP_LIST;
+import static com.example.pttk_dbclpm.constant.Constant.Web.*;
 
 public class ControllerServlet extends HttpServlet {
 
   private NhanVienDAO nhanVienDAO = new NhanVienDAOImpl();
   private NhaCungCapDAO nhaCungCapDAO = new NhaCungCapDAOImpl();
+  private NguyenLieuDAO nguyenLieuDAO = new NguyenLieuDAOImpl();
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -93,9 +98,11 @@ public class ControllerServlet extends HttpServlet {
   private void showNhaCungCapList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String nameSearch = request.getParameter("name");
     List<NhaCungCap> nhaCungCaps = nhaCungCapDAO.list(nameSearch);
+    List<NguyenLieu> nguyenLieus = new ArrayList<>();
     request.setAttribute(NHA_CUNG_CAP_LIST, nhaCungCaps);
     HttpSession session = request.getSession();
     session.setAttribute(NHA_CUNG_CAP_LIST, nhaCungCaps);
+    session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
     request.getRequestDispatcher("GdDanhSachNCC.jsp").forward(request, response);
   }
 
@@ -110,6 +117,29 @@ public class ControllerServlet extends HttpServlet {
   }
 
   private void showNguyenLieuList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    Integer nccId = Integer.parseInt(request.getParameter("ncc_id"));
+    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(request.getParameter("name"), nccId);
+    request.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
+    HttpSession session = request.getSession();
+    session.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
+    session.setAttribute(NHA_CUNG_CAP_ID, nccId);
     request.getRequestDispatcher("GdDanhSachNL.jsp").forward(request, response);
   }
+
+
+//  private void pushNguyenLieuDaChon(HttpServletRequest request, HttpServletResponse response) {
+//    HttpSession session = request.getSession();
+//    List<NguyenLieu> nguyenLieus = (List<NguyenLieu>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
+//
+//
+//  }
+
+
+  private void addNguyenLieu(HttpServletRequest request, HttpServletResponse response) {
+    HttpSession session = request.getSession();
+    Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
+    String productName = request.getParameter("productNewName");
+
+  }
+
 }

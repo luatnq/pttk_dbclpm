@@ -11,5 +11,8 @@ public class Constant {
 
   public static class Web {
     public static String NHA_CUNG_CAP_LIST = "nccList";
+    public static String NGUYEN_LIEU_LIST = "nlList";
+    public static String NHA_CUNG_CAP_ID = "ncc_id";
+    public static String NGUYEN_LIEU_DA_CHON = "nguyenLieuDaChon";
   }
 }

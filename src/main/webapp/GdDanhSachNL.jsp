@@ -1,4 +1,6 @@
-<%--
+<%@ page import="com.example.pttk_dbclpm.entity.NguyenLieu" %>
+<%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.NGUYEN_LIEU_LIST" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: luatnq
   Date: 08/11/2022
@@ -8,9 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"
-            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous">
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dsNl.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -27,7 +27,7 @@
           crossorigin="anonymous" referrerpolicy="no-referrer"
     />
 
-    <title>Danh sách sản phẩm</title>
+    <title>Danh sách nguyên liệu</title>
 </head>
 <body>
 <div style="padding-bottom: 20px;">
@@ -43,8 +43,8 @@
                 </ol>
             </nav>
             <button type="button" class="btn" style="padding: 0px;">
-                <img src="../../../images/avatarDefault.png" width="50px" height="50px"/>
-                <span style="text-align: center;">Hiệp đẹp trai</span>
+                <img src="${pageContext.request.contextPath}/images/avatarDefault.png" width="50px" height="50px"/>
+                <span style="text-align: center;">Nguyen Quoc Luat</span>
             </button>
         </div>
     </header>
@@ -68,7 +68,7 @@
                 <button style="width: 130px" type="button" data-bs-dismiss="modal"
                         class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
                         data-bs-target="#exampleModal1">
-                    <img src="../../images/search.png" class="me-1" alt="">
+                    <img src="${pageContext.request.contextPath}/images/search.png" class="me-1" alt="">
                     Tìm kiếm
                 </button>
             </div>
@@ -79,6 +79,10 @@
     </div>
 </div>
 
+<%
+    List<NguyenLieu> nguyenLieuList = (List<NguyenLieu>) session.getAttribute(NGUYEN_LIEU_LIST);
+    session.removeAttribute(NGUYEN_LIEU_LIST);
+%>
 <%--danh sách nguyên liệu có sẵn--%>
 <div class="d-flex px-5">
     <div class="px-5" style="width: 50%; border-right: 1px solid #ccc">
@@ -99,46 +103,21 @@
             </tr>
             </thead>
             <tbody class="table-content">
-            <tr data-bs-toggle="modal" data-bs-target="#enterProducts">
-                <th class="text-center">1</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">100</td>
-            </tr>
-            <tr>
-                <th class="text-center">2</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">100</td>
-            </tr>
-            <tr>
-                <th class="text-center">3</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">100</td>
-            </tr>
-            <tr>
-                <th class="text-center">4</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">100</td>
-            </tr>
-            <tr>
-                <th class="text-center">5</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">100</td>
-            </tr>
-            <tr>
-                <th class="text-center">6</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">100</td>
-            </tr>
-            <tr>
-                <th class="text-center">7</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">100</td>
-            </tr>
-            <tr>
-                <th class="text-center">8</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">100</td>
-            </tr>
+            <%
+                int i = 1;
+                for (NguyenLieu nguyenLieu : nguyenLieuList) {
+            %>
+                <tr onclick="showModalEnter(this)" id="<%=nguyenLieu.getTen()%>">
+                    <th class="text-center"><%=i++%>
+                    </th>
+                    <td class="nr" style="text-align: left;"><%=nguyenLieu.getTen()%>
+                    </td>
+                    <td style="text-align: end;"><%=nguyenLieu.getSoLuong()%>
+                    </td>
+                </tr>
+            <%
+                }
+            %>
             </tbody>
         </table>
     </div>
@@ -233,12 +212,12 @@
                             " type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="title-modal-body">Nhập thông tin nguyên liệu</div>
-                <form action="GET">
+                <form action="" method="post">
                     <div style="padding: 20px 0;">
                         <b-row class="mb-5">
                             <div>
                                 <label for="exampleFormControlInput1" class="form-label">Tên nguyên liệu</label>
-                                <input type="text" required class="form-control" id="productName"
+                                <input type="text" required class="form-control" id="productNameEnter"
                                        placeholder="Name...">
                             </div>
                         </b-row>
@@ -249,8 +228,7 @@
                                        placeholder="Number...">
                             </div>
                             <div style="width: 48%;">
-                                <label for="exampleFormControlInput1" class="form-label">Đơn giá
-                                    (VNĐ)</label>
+                                <label for="exampleFormControlInput1" class="form-label">Đơn giá(VNĐ)</label>
                                 <input type="text" required class="form-control" id="exampleFormControlInput3"
                                        placeholder="Price...">
                             </div>
@@ -260,12 +238,10 @@
                     <div class="control-button" style="text-align: center;">
                         <button type="button" data-bs-dismiss="modal"
                                 style="padding: 8px 20px; border-radius: 10px; width: 150px; margin-right: 20px;"
-                                class="btn btn-outline-secondary">
-                            Hủy bỏ
+                                class="btn btn-outline-secondary">Hủy bỏ
                         </button>
                         <button type="submit" data-bs-dismiss="modal"
-                                style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">
-                            Lưu
+                                style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">Lưu
                         </button>
                     </div>
                 </form>
@@ -283,14 +259,13 @@
                     <button style="background-color: #d6d5d5;border-radius: 50%;font-size: 12px;
                             " type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="title-modal-body">Nhập thông tin nguyên liệu</div>
+                <div class="title-modal-body">Thêm mới nguyên liệu</div>
                 <form action="GET">
                     <div style="padding: 20px 0;">
                         <b-row class="mb-5">
                             <div>
-                                <label for="exampleFormControlInput1" class="form-label">Tên nguyên
-                                    liệu</label>
-                                <input type="text" required class="form-control" id="productName"
+                                <label for="exampleFormControlInput1" class="form-label">Tên nguyên liệu</label>
+                                <input type="text" required class="form-control" id="productNewName"
                                        placeholder="Tên nguyên liệu...">
                             </div>
                         </b-row>
@@ -327,7 +302,7 @@
                             " type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="title-modal-success">
-                    <img src="../../images/iconSuccess.png" alt="" width="50px" height="50px"
+                    <img src="${pageContext.request.contextPath}/images/iconSuccess.png" alt="" width="50px" height="50px"
                          style="margin-bottom: 20px;">
                     <br/>
                     In hóa đơn thành công!
@@ -343,9 +318,11 @@
     </div>
 </div>
 </body>
-</html>
-<script>
-    $(function () {
-        $("#header").load("../../header.html");
-    });
+<script type="text/javascript">
+    const showModalEnter = (row) =>{
+        var $text = $(row).find(".nr").text();
+        $('#productNameEnter').val($text)
+        $('#enterProducts').modal('show');
+    }
 </script>
+</html>
