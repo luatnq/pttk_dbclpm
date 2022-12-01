@@ -1,6 +1,10 @@
 <%@ page import="com.example.pttk_dbclpm.entity.NguyenLieu" %>
 <%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.NGUYEN_LIEU_LIST" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.TEN_NHA_CUNG_CAP" %>
+<%@ page import="com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap" %>
+<%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.*" %>
+<%@ page import="java.util.Objects" %><%--
   Created by IntelliJ IDEA.
   User: luatnq
   Date: 08/11/2022
@@ -53,7 +57,8 @@
 </div>
 <div class="d-flex px-5 justify-content-around mb-4 mt-4" style="color: #2563EB;">
     <h4 class="px-5" style="">
-        Danh sách nguyên liệu - Đại lý A
+        <%--        <%=session.getAttribute()%>--%>
+        <%= "Danh sách nguyên liệu đã nhập tại nhà cung cấp " + session.getAttribute(TEN_NHA_CUNG_CAP)%>
     </h4>
     <h4 style="">
         Danh sách nguyên liệu đã nhập
@@ -61,18 +66,18 @@
 </div>
 <div class="d-flex px-5">
     <div class=" px-5" style="width: 50%; border-right: 1px solid #ccc">
-        <div class="col-12 header-search">
-            <div style="display: flex ;padding: 10px 10px; justify-content: space-between; flex: 1; height: 55px;">
-                <input type="search" required="required" class="header_search_input h-100" id="header_search_input"
-                       placeholder="Nhập tên nguyên liệu để tìm kiếm"/>
-                <button style="width: 130px" type="button" data-bs-dismiss="modal"
-                        class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal1">
+        <form action="<%=request.getContextPath()%>/nls_search" method="post">
+            <div class="col-12 header-search">
+                <div style="display: flex ;padding: 10px 10px; justify-content: space-between; flex: 1; height: 55px;">
+                    <input type="search" required="required" class="header_search_input h-100" id="name" name="name"
+                           placeholder="Nhập tên nguyên liệu để tìm kiếm"/>
+                    <input type="submit" value="Tìm kiếm" style="width: 130px" data-bs-dismiss="modal"
+                           class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
+                           data-bs-target="#exampleModal1">
                     <img src="${pageContext.request.contextPath}/images/search.png" class="me-1" alt="">
-                    Tìm kiếm
-                </button>
+                </div>
             </div>
-        </div>
+        </form>
     </div>
     <div style="width: 50%;">
 
@@ -82,6 +87,7 @@
 <%
     List<NguyenLieu> nguyenLieuList = (List<NguyenLieu>) session.getAttribute(NGUYEN_LIEU_LIST);
     session.removeAttribute(NGUYEN_LIEU_LIST);
+    List<NguyenLieuNhaCungCap> nguyenLieuNhaCungCaps = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
 %>
 <%--danh sách nguyên liệu có sẵn--%>
 <div class="d-flex px-5">
@@ -107,14 +113,14 @@
                 int i = 1;
                 for (NguyenLieu nguyenLieu : nguyenLieuList) {
             %>
-                <tr onclick="showModalEnter(this)" id="<%=nguyenLieu.getTen()%>">
-                    <th class="text-center"><%=i++%>
-                    </th>
-                    <td class="nr" style="text-align: left;"><%=nguyenLieu.getTen()%>
-                    </td>
-                    <td style="text-align: end;"><%=nguyenLieu.getSoLuong()%>
-                    </td>
-                </tr>
+            <tr onclick="showModalEnter(this)" id="<%=nguyenLieu.getTen()%>">
+                <th class="text-center"><%=i++%>
+                </th>
+                <td class="nr" style="text-align: left;"><%=nguyenLieu.getTen()%>
+                </td>
+                <td style="text-align: end;"><%=nguyenLieu.getSoLuong()%>
+                </td>
+            </tr>
             <%
                 }
             %>
@@ -141,62 +147,26 @@
             </tr>
             </thead>
             <tbody class="table-content">
+            <%
+                int j = 1;
+                if (Objects.nonNull(nguyenLieuNhaCungCaps) && nguyenLieuNhaCungCaps.size() > 0) {
+                    for (NguyenLieuNhaCungCap nguyenLieu : nguyenLieuNhaCungCaps) {
+            %>
             <tr>
-                <th class="text-center">1</th>
+                <th class="text-center">j++</th>
                 <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">10</td>
-                <td style="text-align: end;">10.000</td>
-                <td style="text-align: end;">100.000</td>
+                <td style="text-align: end;"><%=nguyenLieu.getSoLuong()%>
+                </td>
+                <td style="text-align: end;"><%=nguyenLieu.getDonGia()%>
+                </td>
+                <td style="text-align: end;"><%=nguyenLieu.getSoLuong() * nguyenLieu.getDonGia()%>
+                </td>
             </tr>
-            <tr>
-                <th class="text-center">2</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">10</td>
-                <td style="text-align: end;">10.000</td>
-                <td style="text-align: end;">100.000</td>
-            </tr>
-            <tr>
-                <th class="text-center">3</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">10</td>
-                <td style="text-align: end;">10.000</td>
-                <td style="text-align: end;">100.000</td>
-            </tr>
-            <tr>
-                <th class="text-center">4</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">10</td>
-                <td style="text-align: end;">10.000</td>
-                <td style="text-align: end;">100.000</td>
-            </tr>
-            <tr>
-                <th class="text-center">5</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">10</td>
-                <td style="text-align: end;">10.000</td>
-                <td style="text-align: end;">100.000</td>
-            </tr>
-            <tr>
-                <th class="text-center">6</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">10</td>
-                <td style="text-align: end;">10.000</td>
-                <td style="text-align: end;">100.000</td>
-            </tr>
-            <tr>
-                <th class="text-center">7</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">10</td>
-                <td style="text-align: end;">10.000</td>
-                <td style="text-align: end;">100.000</td>
-            </tr>
-            <tr>
-                <th class="text-center">8</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
-                <td style="text-align: end;">10</td>
-                <td style="text-align: end;">10.000</td>
-                <td style="text-align: end;">100.000</td>
-            </tr>
+
+            <%
+                    }
+                }
+            %>
             </tbody>
         </table>
     </div>
@@ -212,25 +182,25 @@
                             " type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="title-modal-body">Nhập thông tin nguyên liệu</div>
-                <form action="" method="post">
+                <form action="<%=request.getContextPath()%>/nls_pick" method="post">
                     <div style="padding: 20px 0;">
                         <b-row class="mb-5">
                             <div>
-                                <%--@declare id="exampleformcontrolinput1"--%><label for="exampleFormControlInput1" class="form-label">Tên nguyên liệu</label>
+                                <label for="productNameEnter" class="form-label">Tên nguyên liệu</label>
                                 <input type="text" required class="form-control" id="productNameEnter"
-                                       placeholder="Name...">
+                                       name="productNameEnter" placeholder="Name...">
                             </div>
                         </b-row>
                         <b-row style="display: flex; justify-content: space-between; margin:24px 0;">
                             <div style="width: 48%;">
-                                <label for="exampleFormControlInput1" class="form-label">Số lượng</label>
+                                <label for="productNumber" class="form-label">Số lượng</label>
                                 <input type="text" required class="form-control" id="productNumber"
-                                       placeholder="Number...">
+                                       name="productNumber" placeholder="Number...">
                             </div>
                             <div style="width: 48%;">
-                                <label for="exampleFormControlInput1" class="form-label">Đơn giá(VNĐ)</label>
-                                <input type="text" required class="form-control" id="exampleFormControlInput3"
-                                       placeholder="Price...">
+                                <label for="productPrice" class="form-label">Đơn giá(VNĐ)</label>
+                                <input type="text" required class="form-control" id="productPrice"
+                                       name="productPrice" placeholder="Price...">
                             </div>
                         </b-row>
                     </div>
@@ -240,9 +210,8 @@
                                 style="padding: 8px 20px; border-radius: 10px; width: 150px; margin-right: 20px;"
                                 class="btn btn-outline-secondary">Hủy bỏ
                         </button>
-                        <button type="submit" data-bs-dismiss="modal"
-                                style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">Lưu
-                        </button>
+                        <input type="submit" value="OK" data-bs-dismiss="modal"
+                               style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">
                     </div>
                 </form>
             </div>
@@ -265,7 +234,8 @@
                         <b-row class="mb-5">
                             <div>
                                 <label for="productNewName" class="form-label">Tên nguyên liệu</label>
-                                <input type="text" required class="form-control" id="productNewName" name="productNewName"
+                                <input type="text" required class="form-control" id="productNewName"
+                                       name="productNewName"
                                        placeholder="Tên nguyên liệu...">
                             </div>
                         </b-row>
@@ -278,8 +248,8 @@
                                 class="btn btn-outline-secondary">
                             Hủy bỏ
                         </button>
-                        <input type="submit" value="Lưu" data-bs-dismiss="modal"
-                                style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">
+                        <input type="submit" value="OK" data-bs-dismiss="modal"
+                               style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">
                     </div>
                 </form>
             </div>
@@ -300,7 +270,8 @@
                             " type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="title-modal-success">
-                    <img src="${pageContext.request.contextPath}/images/iconSuccess.png" alt="" width="50px" height="50px"
+                    <img src="${pageContext.request.contextPath}/images/iconSuccess.png" alt="" width="50px"
+                         height="50px"
                          style="margin-bottom: 20px;">
                     <br/>
                     In hóa đơn thành công!
@@ -317,7 +288,7 @@
 </div>
 </body>
 <script type="text/javascript">
-    const showModalEnter = (row) =>{
+    const showModalEnter = (row) => {
         var $text = $(row).find(".nr").text();
         $('#productNameEnter').val($text)
         $('#enterProducts').modal('show');

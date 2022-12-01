@@ -80,7 +80,6 @@
                                        data-bs-target="#exampleModal1"><img
                                     src="${pageContext.request.contextPath}/images/search.png" class="me-1"
                                     alt="">
-                                </input>
                             </div>
                         </div>
                     </form>
@@ -111,7 +110,7 @@
                         int i = 1;
                         for (NhaCungCap nhaCungCap : nhaCungCaps) {
                     %>
-                    <tr onclick="window.location='<%=request.getContextPath()%>/nls?ncc_id=<%=nhaCungCap.getId()%>'">
+                    <tr onclick="window.location='<%=request.getContextPath()%>/nls?ncc_id=<%=nhaCungCap.getId()%>&ncc_name=<%=nhaCungCap.getTen()%>'">
                         <th class="text-center"><%=i++%>
                         </th>
                         <td style="text-align: left;"><%=nhaCungCap.getTen()%>

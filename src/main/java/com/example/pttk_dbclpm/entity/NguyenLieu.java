@@ -20,6 +20,12 @@ public class NguyenLieu {
     this.soLuong = soLuong;
   }
 
+  public NguyenLieu(Integer id, String ten, Integer soLuong) {
+    this.id = id;
+    this.ten = ten;
+    this.soLuong = soLuong;
+  }
+
   public Integer getId() {
     return id;
   }

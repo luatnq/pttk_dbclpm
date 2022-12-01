@@ -7,6 +7,7 @@ import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NhanVienDAOImpl;
 import com.example.pttk_dbclpm.entity.NguyenLieu;
+import com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap;
 import com.example.pttk_dbclpm.entity.NhaCungCap;
 import com.example.pttk_dbclpm.entity.NhanVien;
 import jakarta.servlet.RequestDispatcher;
@@ -68,7 +69,12 @@ public class ControllerServlet extends HttpServlet {
         case "/nls_add":
           addNguyenLieu(request, response);
           break;
-
+        case "/nls_search":
+          showNguyenLieuList(request, response);
+          break;
+        case "/nls_pick":
+          pushNguyenLieuDaChon(request, response);
+          break;
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -101,7 +107,7 @@ public class ControllerServlet extends HttpServlet {
   private void showNhaCungCapList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String nameSearch = request.getParameter("name");
     List<NhaCungCap> nhaCungCaps = nhaCungCapDAO.list(nameSearch);
-    List<NguyenLieu> nguyenLieus = new ArrayList<>();
+    List<NguyenLieuNhaCungCap> nguyenLieus = new ArrayList<>();
     request.setAttribute(NHA_CUNG_CAP_LIST, nhaCungCaps);
     HttpSession session = request.getSession();
     session.setAttribute(NHA_CUNG_CAP_LIST, nhaCungCaps);
@@ -125,6 +131,7 @@ public class ControllerServlet extends HttpServlet {
     Integer nccId = Objects.nonNull(nccIdStr) ? Integer.parseInt(request.getParameter("ncc_id")) :
           (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
 
+    session.setAttribute(TEN_NHA_CUNG_CAP, request.getParameter("ncc_name"));
     session.removeAttribute(NHA_CUNG_CAP_ID);
     List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(request.getParameter("name"), nccId);
     request.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
@@ -134,12 +141,16 @@ public class ControllerServlet extends HttpServlet {
   }
 
 
-//  private void pushNguyenLieuDaChon(HttpServletRequest request, HttpServletResponse response) {
-//    HttpSession session = request.getSession();
-//    List<NguyenLieu> nguyenLieus = (List<NguyenLieu>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
-//
-//
-//  }
+  private void pushNguyenLieuDaChon(HttpServletRequest request, HttpServletResponse response) {
+    HttpSession session = request.getSession();
+    List<NguyenLieuNhaCungCap> nguyenLieus = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
+    session.removeAttribute(NGUYEN_LIEU_DA_CHON);
+    String productName = request.getParameter("productNameEnter");
+    Integer productNumber = Integer.valueOf(request.getParameter("productNumber"));
+    Integer productPrice = Integer.valueOf(request.getParameter("productPrice"));
+
+    int i = 0;
+  }
 
 
   private void addNguyenLieu(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {

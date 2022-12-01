@@ -14,5 +14,7 @@ public class Constant {
     public static String NGUYEN_LIEU_LIST = "nlList";
     public static String NHA_CUNG_CAP_ID = "ncc_id";
     public static String NGUYEN_LIEU_DA_CHON = "nguyenLieuDaChon";
+
+    public static String TEN_NHA_CUNG_CAP = "ncc_name";
   }
 }
