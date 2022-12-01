@@ -70,7 +70,7 @@
             <div class="row two-table justify-content-center">
                 <div class="row ">
 
-                    <form action="<%=request.getContextPath()%>/nccs-search">
+                    <form action="<%=request.getContextPath()%>/nccs_search">
                         <div class="col-12 header-search">
                             <div style="display: flex;padding: 10px 10px; justify-content: space-between; flex: 1; height: 65px;">
                                 <input type="search" required="required" class="header_search_input h-100" name="name"
@@ -140,7 +140,7 @@
                     <button style="background-color: #d6d5d5; border-radius: 50%; font-size: 12px; padding: 7px;
                                 " type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="<%=request.getContextPath()%>/nccs-add" name="addProduct" method="post">
+                <form action="<%=request.getContextPath()%>/nccs_add" name="addProduct" method="post">
                     <div class="title-modal-body">Thêm mới nhà cung cấp</div>
                     <div style="padding: 20px 0;">
                         <b-row style="display: flex; justify-content: space-between;" class="mb-3">

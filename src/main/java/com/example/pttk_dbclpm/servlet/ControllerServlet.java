@@ -39,36 +39,39 @@ public class ControllerServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    String action = request.getServletPath();
+    try {
+      String action = request.getServletPath();
 //    action.
 //    try {
-    switch (action) {
-      case "/login":
-        showFormLogin(request, response);
-        break;
-      case "/check_login":
-        login(request, response);
-        break;
-      case "/home":
-        showHome(request, response);
-        break;
-      case "/nccs":
-        showNhaCungCapList(request, response);
-        break;
-      case "/nccs-search":
-        showNhaCungCapList(request, response);
-        break;
-      case "/nccs-add":
-        try {
+      switch (action) {
+        case "/login":
+          showFormLogin(request, response);
+          break;
+        case "/check_login":
+          login(request, response);
+          break;
+        case "/home":
+          showHome(request, response);
+          break;
+        case "/nccs":
+          showNhaCungCapList(request, response);
+          break;
+        case "/nccs_search":
+          showNhaCungCapList(request, response);
+          break;
+        case "/nccs_add":
           luuNcc(request, response);
-        } catch (SQLException e) {
-          throw new RuntimeException(e);
-        }
-        break;
-      case "/nls":
-        showNguyenLieuList(request, response);
-        break;
+          break;
+        case "/nls":
+          showNguyenLieuList(request, response);
+          break;
+        case "/nls_add":
+          addNguyenLieu(request, response);
+          break;
 
+      }
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
     }
   }
 
@@ -117,10 +120,14 @@ public class ControllerServlet extends HttpServlet {
   }
 
   private void showNguyenLieuList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    Integer nccId = Integer.parseInt(request.getParameter("ncc_id"));
+    String nccIdStr = request.getParameter("ncc_id");
+    HttpSession session = request.getSession();
+    Integer nccId = Objects.nonNull(nccIdStr) ? Integer.parseInt(request.getParameter("ncc_id")) :
+          (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
+
+    session.removeAttribute(NHA_CUNG_CAP_ID);
     List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(request.getParameter("name"), nccId);
     request.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
-    HttpSession session = request.getSession();
     session.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
     session.setAttribute(NHA_CUNG_CAP_ID, nccId);
     request.getRequestDispatcher("GdDanhSachNL.jsp").forward(request, response);
@@ -135,11 +142,12 @@ public class ControllerServlet extends HttpServlet {
 //  }
 
 
-  private void addNguyenLieu(HttpServletRequest request, HttpServletResponse response) {
+  private void addNguyenLieu(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
     HttpSession session = request.getSession();
     Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
     String productName = request.getParameter("productNewName");
-
+    nguyenLieuDAO.luuNguyenLieu(productName, nccId);
+    showNguyenLieuList(request, response);
   }
 
 }

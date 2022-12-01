@@ -216,7 +216,7 @@
                     <div style="padding: 20px 0;">
                         <b-row class="mb-5">
                             <div>
-                                <label for="exampleFormControlInput1" class="form-label">Tên nguyên liệu</label>
+                                <%--@declare id="exampleformcontrolinput1"--%><label for="exampleFormControlInput1" class="form-label">Tên nguyên liệu</label>
                                 <input type="text" required class="form-control" id="productNameEnter"
                                        placeholder="Name...">
                             </div>
@@ -260,12 +260,12 @@
                             " type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="title-modal-body">Thêm mới nguyên liệu</div>
-                <form action="GET">
+                <form action="<%=request.getContextPath()%>/nls_add" method="post">
                     <div style="padding: 20px 0;">
                         <b-row class="mb-5">
                             <div>
-                                <label for="exampleFormControlInput1" class="form-label">Tên nguyên liệu</label>
-                                <input type="text" required class="form-control" id="productNewName"
+                                <label for="productNewName" class="form-label">Tên nguyên liệu</label>
+                                <input type="text" required class="form-control" id="productNewName" name="productNewName"
                                        placeholder="Tên nguyên liệu...">
                             </div>
                         </b-row>
@@ -278,10 +278,8 @@
                                 class="btn btn-outline-secondary">
                             Hủy bỏ
                         </button>
-                        <button type="submit" data-bs-dismiss="modal"
+                        <input type="submit" value="Lưu" data-bs-dismiss="modal"
                                 style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">
-                            Lưu
-                        </button>
                     </div>
                 </form>
             </div>
