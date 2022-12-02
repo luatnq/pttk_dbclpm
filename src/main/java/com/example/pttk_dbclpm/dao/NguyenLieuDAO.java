@@ -9,4 +9,6 @@ public interface NguyenLieuDAO {
   List<NguyenLieu> list(String name, Integer nccId);
 
   void luuNguyenLieu(String tenNguyenLieu, Integer nccId) throws SQLException;
+
+  Integer getIdNguyenLieu(String tenNguyenLieu);
 }

@@ -153,13 +153,13 @@
                     for (NguyenLieuNhaCungCap nguyenLieu : nguyenLieuNhaCungCaps) {
             %>
             <tr>
-                <th class="text-center">j++</th>
-                <td style="text-align: left;">Nguyên liệu A</td>
+                <th class="text-center"><%=j++%></th>
+                <td style="text-align: left;"><%=nguyenLieu.getNguyenLieu().getTen()%></td>
                 <td style="text-align: end;"><%=nguyenLieu.getSoLuong()%>
                 </td>
                 <td style="text-align: end;"><%=nguyenLieu.getDonGia()%>
                 </td>
-                <td style="text-align: end;"><%=nguyenLieu.getSoLuong() * nguyenLieu.getDonGia()%>
+                <td style="text-align: end;"><%=nguyenLieu.getTongTien()%>
                 </td>
             </tr>
 

@@ -13,14 +13,14 @@ import java.util.logging.Logger;
 
 public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
   Logger log = Logger.getLogger(NguyenLieuDAOImpl.class.getName());
-  private String SELECT_SEARCH = "SELECT tnl.id, tnl.ten, SUM(tnlncc.soLuong) as totalSoLuong  FROM tblNguyenLieu tnl \n" +
+  private String SELECT_SEARCH = "SELECT tnl.ten, SUM(tnlncc.soLuong) as totalSoLuong  FROM tblNguyenLieu tnl \n" +
         "join tblNguyenLieuNhaCungCap tnlncc on tnl.id = tnlncc.idTblNguyenLieu \n" +
         "where tnlncc.idTblNhaCungCap = ? and tnl.ten like ? \n" +
-        "GROUP BY tnl.ten ";
-  private String SELECT_ALL = "SELECT tnl.id, tnl.ten, SUM(tnlncc.soLuong) as totalSoLuong  FROM tblNguyenLieu tnl \n" +
+        "GROUP BY tnl.ten, tnlncc.idTblNhaCungCap ";
+  private String SELECT_ALL = "SELECT tnl.ten, SUM(tnlncc.soLuong) as totalSoLuong  FROM tblNguyenLieu tnl \n" +
         "join tblNguyenLieuNhaCungCap tnlncc on tnl.id = tnlncc.idTblNguyenLieu \n" +
         "where tnlncc.idTblNhaCungCap = ? \n" +
-        "GROUP BY tnl.ten ";
+        "GROUP BY tnl.ten, tnlncc.idTblNhaCungCap ";
 
   private String CHECK_EXIST = "SELECT * FROM tblNguyenLieu tnl \n" +
         "JOIN tblNguyenLieuNhaCungCap tnlncc ON tnl.id = tnlncc.idTblNguyenLieu \n" +
@@ -32,6 +32,8 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
 
   private String INSERT_NGUYEN_LIEU_NHA_CUNG_CAP = "INSERT INTO pttk.tblNguyenLieuNhaCungCap (soLuong, donGia, idTblNhaCungCap, idTblNguyenLieu) \n" +
         "VALUES(0, 0, ?, ?) ";
+
+  private String SELECT_NGUYEN_LIEU = "SELECT tnl.id FROM tblNguyenLieu tnl WHERE tnl.ten = ? ";
 
   public NguyenLieuDAOImpl() {
     super();
@@ -49,7 +51,6 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
 
       while (rs.next()) {
         NguyenLieu nguyenLieu = new NguyenLieu(
-              rs.getInt("id"),
               rs.getString("ten"),
               rs.getInt("totalSoLuong")
         );
@@ -72,21 +73,35 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
       selectCheckExist.setString(2, tenNguyenLieu);
       ResultSet rs = selectCheckExist.executeQuery();
       if (!rs.next()) {
-        PreparedStatement insertNguyenLieu = conn.prepareStatement(INSERT_NGUYEN_LIEU, Statement.RETURN_GENERATED_KEYS);
-        insertNguyenLieu.setString(1, tenNguyenLieu);
-        int result = insertNguyenLieu.executeUpdate();
-        if (result == 0) throw new SQLException();
+        PreparedStatement selectNguyenLieu = conn.prepareStatement(SELECT_NGUYEN_LIEU);
+        selectNguyenLieu.setString(1, tenNguyenLieu);
         Integer nguyenLieuId = null;
-        try (ResultSet generatedKey = insertNguyenLieu.getGeneratedKeys()) {
-          if (generatedKey.next()) {
-            nguyenLieuId = generatedKey.getInt(1);
-            PreparedStatement insertNguyenLieuNhaCungCap = conn.prepareStatement(INSERT_NGUYEN_LIEU_NHA_CUNG_CAP);
-            insertNguyenLieuNhaCungCap.setInt(1, nccId);
-            insertNguyenLieuNhaCungCap.setInt(2, nguyenLieuId);
-            int resultInsert = insertNguyenLieuNhaCungCap.executeUpdate();
+        ResultSet resultSet = selectNguyenLieu.executeQuery();
+        if (resultSet.next()) {
+          nguyenLieuId = resultSet.getInt("id");
+          PreparedStatement insertNguyenLieuNhaCungCap = conn.prepareStatement(INSERT_NGUYEN_LIEU_NHA_CUNG_CAP);
+          insertNguyenLieuNhaCungCap.setInt(1, nccId);
+          insertNguyenLieuNhaCungCap.setInt(2, nguyenLieuId);
+          int resultInsert = insertNguyenLieuNhaCungCap.executeUpdate();
+          if (resultInsert == 0) throw new SQLException();
 
-            if (resultInsert == 0) throw new SQLException();
-          } else throw new SQLException();
+        } else {
+
+          PreparedStatement insertNguyenLieu = conn.prepareStatement(INSERT_NGUYEN_LIEU, Statement.RETURN_GENERATED_KEYS);
+          insertNguyenLieu.setString(1, tenNguyenLieu);
+          int result = insertNguyenLieu.executeUpdate();
+          if (result == 0) throw new SQLException();
+          try (ResultSet generatedKey = insertNguyenLieu.getGeneratedKeys()) {
+            if (generatedKey.next()) {
+              nguyenLieuId = generatedKey.getInt(1);
+              PreparedStatement insertNguyenLieuNhaCungCap = conn.prepareStatement(INSERT_NGUYEN_LIEU_NHA_CUNG_CAP);
+              insertNguyenLieuNhaCungCap.setInt(1, nccId);
+              insertNguyenLieuNhaCungCap.setInt(2, nguyenLieuId);
+              int resultInsert = insertNguyenLieuNhaCungCap.executeUpdate();
+
+              if (resultInsert == 0) throw new SQLException();
+            } else throw new SQLException();
+          }
         }
       }
       conn.commit();
@@ -99,4 +114,21 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
     }
   }
 
+
+  public Integer getIdNguyenLieu(String tenNguyenLieu) {
+    Connection conn = null;
+    try {
+      conn = super.connection;
+
+      PreparedStatement selectNguyenLieu = conn.prepareStatement(SELECT_NGUYEN_LIEU);
+      selectNguyenLieu.setString(1, tenNguyenLieu);
+
+      ResultSet rs = selectNguyenLieu.executeQuery();
+      if (rs.next()) return rs.getInt("id");
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return null;
+  }
 }

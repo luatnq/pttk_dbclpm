@@ -7,6 +7,8 @@ public class NguyenLieuNhaCungCap {
   private NhaCungCap nhaCungCap;
   private NguyenLieu nguyenLieu;
 
+  private Integer tongTien;
+
   public NguyenLieuNhaCungCap() {
   }
 
@@ -16,6 +18,22 @@ public class NguyenLieuNhaCungCap {
     this.donGia = donGia;
     this.nhaCungCap = nhaCungCap;
     this.nguyenLieu = nguyenLieu;
+  }
+
+  public NguyenLieuNhaCungCap(Integer soLuong, Integer donGia, Integer nhaCungCapId, Integer nguyenLieuId, String tenNguyenLieu) {
+    this.soLuong = soLuong;
+    this.donGia = donGia;
+    this.nhaCungCap = new NhaCungCap(nhaCungCapId);
+    this.nguyenLieu = new NguyenLieu(nguyenLieuId, tenNguyenLieu);
+    this.tongTien = soLuong * donGia;
+  }
+
+  public Integer getTongTien() {
+    return tongTien;
+  }
+
+  public void setTongTien(Integer tongTien) {
+    this.tongTien = tongTien;
   }
 
   public Integer getId() {

@@ -9,6 +9,10 @@ public class NhaCungCap {
   public NhaCungCap() {
   }
 
+  public NhaCungCap(Integer id) {
+    this.id = id;
+  }
+
   public NhaCungCap(Integer id, String ten, String diaChi, String sdt) {
     this.id = id;
     this.ten = ten;
