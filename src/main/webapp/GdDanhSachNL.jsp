@@ -4,7 +4,8 @@
 <%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.TEN_NHA_CUNG_CAP" %>
 <%@ page import="com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap" %>
 <%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.*" %>
-<%@ page import="java.util.Objects" %><%--
+<%@ page import="java.util.Objects" %>
+<%@ page import="com.example.pttk_dbclpm.entity.NhanVien" %><%--
   Created by IntelliJ IDEA.
   User: luatnq
   Date: 08/11/2022
@@ -33,6 +34,9 @@
 
     <title>Danh sách nguyên liệu</title>
 </head>
+<%
+    NhanVien nhanVien = (NhanVien) session.getAttribute(NHAN_VIEN_LOGIN);
+%>
 <body>
 <div style="padding-bottom: 20px;">
     <span class="screen-darken"></span>
@@ -48,7 +52,7 @@
             </nav>
             <button type="button" class="btn" style="padding: 0px;">
                 <img src="${pageContext.request.contextPath}/images/avatarDefault.png" width="50px" height="50px"/>
-                <span style="text-align: center;">Nguyen Quoc Luat</span>
+                <span style="text-align: center;"><%=nhanVien.getTen()%></span>
             </button>
         </div>
     </header>
@@ -57,7 +61,6 @@
 </div>
 <div class="d-flex px-5 justify-content-around mb-4 mt-4" style="color: #2563EB;">
     <h4 class="px-5" style="">
-        <%--        <%=session.getAttribute()%>--%>
         <%= "Danh sách nguyên liệu đã nhập tại nhà cung cấp " + session.getAttribute(TEN_NHA_CUNG_CAP)%>
     </h4>
     <h4 style="">
@@ -129,7 +132,8 @@
     </div>
     <div class="px-5" style="width: 50%">
         <div style="display: flex; justify-content:end; padding: 40px 0 20px 0;">
-            <button type="button" data-bs-dismiss="modal" class="btn btn-primary" data-bs-toggle="modal"
+            <button type="button" onclick="window.location='<%=request.getContextPath()%>/add_bill'"
+                    data-bs-dismiss="modal" class="btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#printBuild">
                 Xác nhận
             </button>

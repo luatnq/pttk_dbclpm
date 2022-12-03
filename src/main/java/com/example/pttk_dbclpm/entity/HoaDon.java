@@ -9,6 +9,12 @@ public class HoaDon {
   public HoaDon() {
   }
 
+  public HoaDon(Integer nhanVienId, String tenNhanVien, Integer tongTien, String moTa) {
+    this.nhanVien = new NhanVien(nhanVienId, tenNhanVien);
+    this.tongTien = tongTien;
+    this.moTa = moTa;
+  }
+
   public HoaDon(
         Integer id,
         NhanVien nhanVien,

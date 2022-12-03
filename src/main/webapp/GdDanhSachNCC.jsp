@@ -1,6 +1,9 @@
 <%@ page import="com.example.pttk_dbclpm.entity.NhaCungCap" %>
 <%@ page import="java.util.List" %>
-<%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.NHA_CUNG_CAP_LIST" %><%--
+<%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.NHA_CUNG_CAP_LIST" %>
+<%@ page import="com.example.pttk_dbclpm.entity.NhanVien" %>
+<%@ page import="static com.example.pttk_dbclpm.constant.Constant.Web.NHAN_VIEN_LOGIN" %><%--
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
   Created by IntelliJ IDEA.
   User: luatnq
   Date: 24/11/2022
@@ -26,15 +29,14 @@
             crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-
     <title>Danh sách nhà cung cấp</title>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" /> -->
 </head>
 
 <body>
+
+<%
+    NhanVien nhanVien = (NhanVien) session.getAttribute(NHAN_VIEN_LOGIN);
+%>
 <!-- <header id="header"></header> -->
 <div style="padding-bottom: 20px;">
     <span class="screen-darken"></span>
@@ -49,7 +51,7 @@
             </nav>
             <button type="button" class="btn" style="padding: 0px;">
                 <img src="${pageContext.request.contextPath}/images/avatarDefault.png" width="50px" height="50px"/>
-                <span style="text-align: center;">Nguyen Quoc Luat</span>
+                <span style="text-align: center;"><%=nhanVien.getTen()%></span>
             </button>
         </div>
     </header>
@@ -87,6 +89,11 @@
                 </div>
             </div>
             <div>
+                <c:if test="${not empty message}">
+                    <div class="alert alert-${alert}">
+                            ${message}
+                    </div>
+                </c:if>
                 <div style="display: flex; justify-content:end; padding: 40px 0 20px 0;">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addProducts">
@@ -170,8 +177,8 @@
                             Hủy bỏ
                         </button>
                         <input type="submit" value="Ok" data-bs-dismiss="modal"
-                                style="padding: 8px 20px; border-radius: 10px; width: 30%"
-                                class="btn btn-primary">
+                               style="padding: 8px 20px; border-radius: 10px; width: 30%"
+                               class="btn btn-primary">
                     </div>
                 </form>
             </div>
@@ -188,7 +195,7 @@
     });
 
     function myFunction() {
-            document.getElementById("demo").style.color = "red";
+        document.getElementById("demo").style.color = "red";
     }
 
 

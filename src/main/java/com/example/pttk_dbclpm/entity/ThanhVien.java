@@ -11,6 +11,17 @@ public class ThanhVien implements Serializable {
   public ThanhVien() {
   }
 
+  public ThanhVien(Integer id, String ten) {
+    this.id = id;
+    this.ten = ten;
+  }
+
+  public ThanhVien(Integer id, String taiKhoan, String ten) {
+    this.id = id;
+    this.taiKhoan = taiKhoan;
+    this.ten = ten;
+  }
+
   public ThanhVien(Integer id, String taiKhoan, String matKhau, String ten) {
     this.id = id;
     this.taiKhoan = taiKhoan;

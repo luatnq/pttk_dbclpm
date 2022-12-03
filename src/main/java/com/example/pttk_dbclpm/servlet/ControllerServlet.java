@@ -1,15 +1,14 @@
 package com.example.pttk_dbclpm.servlet;
 
+import com.example.pttk_dbclpm.dao.HoaDonNguyenLieuDAO;
 import com.example.pttk_dbclpm.dao.NguyenLieuDAO;
 import com.example.pttk_dbclpm.dao.NhaCungCapDAO;
 import com.example.pttk_dbclpm.dao.NhanVienDAO;
+import com.example.pttk_dbclpm.dao.impl.HoaDonNguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NhanVienDAOImpl;
-import com.example.pttk_dbclpm.entity.NguyenLieu;
-import com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap;
-import com.example.pttk_dbclpm.entity.NhaCungCap;
-import com.example.pttk_dbclpm.entity.NhanVien;
+import com.example.pttk_dbclpm.entity.*;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -18,7 +17,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +29,7 @@ public class ControllerServlet extends HttpServlet {
   private NhanVienDAO nhanVienDAO = new NhanVienDAOImpl();
   private NhaCungCapDAO nhaCungCapDAO = new NhaCungCapDAOImpl();
   private NguyenLieuDAO nguyenLieuDAO = new NguyenLieuDAOImpl();
+  private HoaDonNguyenLieuDAO hoaDonNguyenLieuDAO = new HoaDonNguyenLieuDAOImpl();
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -43,8 +42,6 @@ public class ControllerServlet extends HttpServlet {
         throws ServletException, IOException {
     try {
       String action = request.getServletPath();
-//    action.
-//    try {
       switch (action) {
         case "/login":
           showFormLogin(request, response);
@@ -76,6 +73,9 @@ public class ControllerServlet extends HttpServlet {
         case "/nls_pick":
           pushNguyenLieuDaChon(request, response);
           break;
+        case "/add_bill":
+          luuHoaDon(request, response);
+          break;
       }
     } catch (SQLException e) {
       throw new RuntimeException(e);
@@ -93,6 +93,8 @@ public class ControllerServlet extends HttpServlet {
     String password = request.getParameter("password");
     NhanVien nhanVien = nhanVienDAO.login(username, password);
     if (Objects.nonNull(nhanVien)) {
+      HttpSession session = request.getSession();
+      session.setAttribute(NHAN_VIEN_LOGIN, nhanVien);
       request.getRequestDispatcher("GdNhanVienChinh.jsp").forward(request, response);
     } else {
       request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -154,9 +156,9 @@ public class ControllerServlet extends HttpServlet {
     List<NguyenLieuNhaCungCap> nguyenLieus = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
     session.removeAttribute(NGUYEN_LIEU_DA_CHON);
     String tenNguyenLieu = request.getParameter("productNameEnter");
-    Integer soLuongNguyenLieu = Integer.valueOf(request.getParameter("productNumber"));
-    Integer donGiaNguyenLieu = Integer.valueOf(request.getParameter("productPrice"));
-    Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(tenNguyenLieu);
+    Integer soLuongNguyenLieu = Integer.valueOf(request.getParameter("productNumber").trim());
+    Integer donGiaNguyenLieu = Integer.valueOf(request.getParameter("productPrice").trim());
+    Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(tenNguyenLieu.trim());
     Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
     nguyenLieus.add(new NguyenLieuNhaCungCap(
           soLuongNguyenLieu,
@@ -174,15 +176,35 @@ public class ControllerServlet extends HttpServlet {
   private void addNguyenLieu(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
     HttpSession session = request.getSession();
     Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
-    String productName = request.getParameter("productNewName");
+    String productName = request.getParameter("productNewName").trim();
     nguyenLieuDAO.luuNguyenLieu(productName, nccId);
     showNguyenLieuList(request, response);
   }
 
   private void luuHoaDon(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
     HttpSession session = request.getSession();
-
+    NhanVien nhanVien = (NhanVien) session.getAttribute(NHAN_VIEN_LOGIN);
     List<NguyenLieuNhaCungCap> nguyenLieus = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
+    HoaDonNguyenLieu hoaDonNguyenLieu = new HoaDonNguyenLieu(
+          nhanVien.getId(),
+          nhanVien.getTen(),
+          calTotalMoney(nguyenLieus),
+          null,
+          nguyenLieus
+    );
+    session.setAttribute(HOA_DON_NGUYEN_LIEU, hoaDonNguyenLieu);
+    nguyenLieus = new ArrayList<>();
+    session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
+    hoaDonNguyenLieuDAO.luuHoaDon(hoaDonNguyenLieu);
+    showNguyenLieuList(request, response);
   }
 
+  private Integer calTotalMoney(List<NguyenLieuNhaCungCap> nguyenLieus) {
+    Integer totalMoney = 0;
+
+    for (NguyenLieuNhaCungCap nguyenLieuNhaCungCap : nguyenLieus) {
+      totalMoney += nguyenLieuNhaCungCap.getDonGia() * nguyenLieuNhaCungCap.getDonGia();
+    }
+    return totalMoney;
+  }
 }

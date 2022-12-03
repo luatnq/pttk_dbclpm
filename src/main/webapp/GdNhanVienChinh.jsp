@@ -12,8 +12,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
-    <script src="https://code.jquery.com/jquery-3.3.1.js"
-            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
             crossorigin="anonymous"></script>
@@ -46,16 +46,10 @@
                 </button>
             </div>
             <div class="col-1">
-                <button type="button" class="btn btn-primary funciton">
+                <button type="button" class="btn btn-primary funciton" onclick="window.location='<%=request.getContextPath()%>/nccs'">
                     QUẢN LÝ NGUYÊN LIỆU
                     <img src="./images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
-                    <i class="fa fa-caret-down"></i>
                 </button>
-                <div class="dropdown-container">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-primary funciton">

@@ -14,6 +14,11 @@ public class HoaDonNguyenLieu extends HoaDon implements Serializable {
     this.nguyenLieuNhaCungCaps = nguyenLieuNhaCungCaps;
   }
 
+  public HoaDonNguyenLieu(Integer nhanVienId, String tenNhanVien, Integer tongTien,String moTa, List<NguyenLieuNhaCungCap> nguyenLieuNhaCungCaps) {
+    super(nhanVienId, tenNhanVien, tongTien, moTa);
+    this.nguyenLieuNhaCungCaps = nguyenLieuNhaCungCaps;
+  }
+
   public List<NguyenLieuNhaCungCap> getNguyenLieuNhaCungCaps() {
     return nguyenLieuNhaCungCaps;
   }
