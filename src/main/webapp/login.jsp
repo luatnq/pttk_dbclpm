@@ -14,65 +14,65 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"/>
     <script src="https://code.jquery.com/jquery-3.3.1.js"
             integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/login.css"/>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/toastr.css"/>
     <!--  -->
     <title>Đăng nhập</title>
 </head>
 <body>
 <div class="container">
     <div class="container_1">
-        <img src="${pageContext.request.contextPath}/images/login_user.png" alt="" class="customImg" style="margin: -50px"/>
+        <img src="${pageContext.request.contextPath}/images/login_user.png" alt="" class="customImg"
+             style="margin: -50px"/>
     </div>
     <div class="container_2">
-        <form action="<%=request.getContextPath()%>/check_login" method="post">
+        <%--        <form action="<%=request.getContextPath()%>/check_login" method="post">--%>
+        <form>
             <div class="form-group" style="margin-top: 100px;">
                     <span class="has-float-label">
                         <input type="text" name="username" value="" class="form-control" id="username"
-                               placeholder="Tên đăng nhập"/>
+                               placeholder="Tên đăng nhập" required>
                     </span>
             </div>
             <div class="form-group">
                     <span class="has-float-label">
-                        <input type="text" name="password" value="" class="form-control" id="password"
-                               placeholder="Mật khẩu"/>
+                        <input type="password" name="password" value="" class="form-control" id="password"
+                               placeholder="Mật khẩu" required>
                     </span>
             </div>
             <div class="col-login">
-                <input type="submit" value="Đăng nhập" style="padding: 8px 55px; border-radius: 10px; width: 100%"
-                       data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">
+                <%--                <input type="submit" value="Đăng nhập" style="padding: 8px 55px; border-radius: 10px; width: 100%"--%>
+                <%--                       data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">--%>
+                <button type="button" onclick="login()" style="padding: 8px 55px; border-radius: 10px; width: 100%"
+                        data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary">
+                    Đăng nhập
+                </button>
             </div>
         </form>
     </div>
 </div>
 
-<%--<script src="${pageContext.request.contextPath}/js/toastr.js"></script>--%>
-<%--<script type="text/javascript">--%>
-<%--    const login = () => {--%>
-<%--        let username = $('#username_lg').val();--%>
-<%--        let password = $('#password_lg').val();--%>
-<%--        $.ajax({--%>
-<%--            url: "/check_login",--%>
-<%--            data: {username: username, password: password},--%>
-<%--            type: 'POST',--%>
-<%--            success: (res) =>{--%>
-<%--                if(res.success){--%>
-<%--                    window.location.replace("http://localhost:8080/home") ;--%>
-<%--                }--%>
-<%--                else{--%>
-<%--                    toastr.error(res.message);--%>
-<%--                }--%>
-<%--            }--%>
-<%--        })--%>
-<%--    }--%>
-<%--</script>--%>
+<script src="${pageContext.request.contextPath}/js/toastr.js"></script>
+<script type="text/javascript">
+    const login = () => {
+        let username = $('#username').val();
+        let password = $('#password').val();
+        $.ajax({
+            url: "/pttk_dbclpm_war_exploded/check_login",
+            data: {username: username, password: password},
+            type: 'POST',
+            success: (res) => {
+                if (res.id != null) {
+                    window.location.replace("http://localhost:8080/pttk_dbclpm_war_exploded/home");
+                } else {
+                    toastr.error("Tài khoản hoặc mật khẩu không chính xác");
+                }
+            }
+        })
+    }
+</script>
 </body>
 </html>

@@ -9,6 +9,7 @@ import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NhanVienDAOImpl;
 import com.example.pttk_dbclpm.entity.*;
+import com.example.pttk_dbclpm.utils.JsonHelper;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -95,11 +96,10 @@ public class ControllerServlet extends HttpServlet {
     if (Objects.nonNull(nhanVien)) {
       HttpSession session = request.getSession();
       session.setAttribute(NHAN_VIEN_LOGIN, nhanVien);
-      request.getRequestDispatcher("GdNhanVienChinh.jsp").forward(request, response);
+      JsonHelper.convert(nhanVien, response);
     } else {
       request.getRequestDispatcher("login.jsp").forward(request, response);
     }
-//    int i = 0;
   }
 
   private void showHome(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -141,11 +141,6 @@ public class ControllerServlet extends HttpServlet {
     request.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
     session.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
     session.setAttribute(NHA_CUNG_CAP_ID, nccId);
-//    PrintWriter out1= response.getWriter();
-//    out1.println("<script type=\"text/javascript\">");
-//    out1.println("alert('Pop-up alert...');");
-//    out1.println("location='index.jsp';");
-//    out1.println("</script>");
     request.getRequestDispatcher("GdDanhSachNL.jsp").forward(request, response);
 
   }
@@ -160,10 +155,12 @@ public class ControllerServlet extends HttpServlet {
     Integer donGiaNguyenLieu = Integer.valueOf(request.getParameter("productPrice").trim());
     Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(tenNguyenLieu.trim());
     Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
+    String tenNcc = (String) session.getAttribute(TEN_NHA_CUNG_CAP);
     nguyenLieus.add(new NguyenLieuNhaCungCap(
           soLuongNguyenLieu,
           donGiaNguyenLieu,
           nccId,
+          tenNcc,
           idNguyenLieu,
           tenNguyenLieu)
     );
@@ -196,7 +193,9 @@ public class ControllerServlet extends HttpServlet {
     nguyenLieus = new ArrayList<>();
     session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
     hoaDonNguyenLieuDAO.luuHoaDon(hoaDonNguyenLieu);
-    showNguyenLieuList(request, response);
+    session.setAttribute(HOA_DON_THANH_CONG, hoaDonNguyenLieu);
+    JsonHelper.convert(hoaDonNguyenLieu, response);
+//    showNguyenLieuList(request, response);
   }
 
   private Integer calTotalMoney(List<NguyenLieuNhaCungCap> nguyenLieus) {

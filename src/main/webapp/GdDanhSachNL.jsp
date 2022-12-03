@@ -22,15 +22,6 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
-          integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"
-    />
 
     <title>Danh sách nguyên liệu</title>
 </head>
@@ -132,9 +123,9 @@
     </div>
     <div class="px-5" style="width: 50%">
         <div style="display: flex; justify-content:end; padding: 40px 0 20px 0;">
-            <button type="button" onclick="window.location='<%=request.getContextPath()%>/add_bill'"
+            <button type="button" onclick="luuHoaDon()"
                     data-bs-dismiss="modal" class="btn btn-primary" data-bs-toggle="modal"
-                    data-bs-target="#printBuild">
+                    data-bs-target="#printBill" data-backdrop="static" and data-keyboard="false">
                 Xác nhận
             </button>
         </div>
@@ -157,8 +148,10 @@
                     for (NguyenLieuNhaCungCap nguyenLieu : nguyenLieuNhaCungCaps) {
             %>
             <tr>
-                <th class="text-center"><%=j++%></th>
-                <td style="text-align: left;"><%=nguyenLieu.getNguyenLieu().getTen()%></td>
+                <th class="text-center"><%=j++%>
+                </th>
+                <td style="text-align: left;"><%=nguyenLieu.getNguyenLieu().getTen()%>
+                </td>
                 <td style="text-align: end;"><%=nguyenLieu.getSoLuong()%>
                 </td>
                 <td style="text-align: end;"><%=nguyenLieu.getDonGia()%>
@@ -262,7 +255,8 @@
 </div>
 
 <!-- Modal in hóa đơn thành công -->
-<div class="modal fade" id="printBuild" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="printBill" tabindex="-1" hidePrevented="true" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content custum-modal">
             <div class="modal-body">
@@ -271,19 +265,58 @@
                                             background-color: #d6d5d5;
                                                 border-radius: 50%;
                                             font-size: 12px;
-                            " type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            " type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="title-modal-success">
-                    <img src="${pageContext.request.contextPath}/images/iconSuccess.png" alt="" width="50px"
-                         height="50px"
-                         style="margin-bottom: 20px;">
+                <div class="title-modal-success mb-2">
+                    <img src="${pageContext.request.contextPath}/images/iconSuccess.png" alt="" width="30px"
+                         height="30px"
+                         style="margin-bottom: 6px;">
                     <br/>
                     In hóa đơn thành công!
                 </div>
-                <div class="control-button" style="text-align: center;">
+                <div class="box-detail py-3 px-4">
+                    <p class="text-center box-detai-title">Hoá Đơn Nhập Nguyên Liệu</p>
+                    <div class="d-flex justify-content-around">
+                        <div>
+                            <p id="nameDaiLy"></p>
+                            <p id="nhanVien"></p>
+                        </div>
+                        <div>
+                            <p>Số điện thoại đại lý: 0987654321</p>
+                            <p id="createdDate"></p>
+                        </div>
+                    </div>
+
+                    <div class="custom-scroll-bar" style="height: 260px !important; overflow-y: scroll;">
+                        <table class="table table-striped mb-0">
+                            <thead class="header-table">
+                            <tr>
+                                <th scope="col" class="text-center">STT</th>
+                                <th scope="col" class="text-left">Tên nguyên liệu</th>
+                                <th scope="col" class="text-end">Số lượng</th>
+                                <th scope="col" class="text-end">Đơn giá(VND)</th>
+                                <th scope="col" class="text-end">Tổng tiền(VND)</th>
+
+                            </tr>
+                            </thead>
+                            <tbody class="table-content" id="hoaDonList">
+                            <%--                            --%>
+                            <%--                            <tr>--%>
+                            <%--                                <th></th>--%>
+                            <%--                                <th></th>--%>
+                            <%--                                <th></th>--%>
+                            <%--                                <th class="text-end">Tổng</th>--%>
+                            <%--                                <th class="text-end">1.000.000</th>--%>
+                            <%--                            </tr>--%>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="control-button mt-3" style="text-align: center;">
                     <button type="button" data-bs-dismiss="modal"
-                            style="padding: 8px 20px; border-radius: 10px; width: 30%;" class="btn btn-outline-dark">
-                        Hủy bỏ
+                            style="padding: 8px 20px; border-radius: 10px; width: 30%;"
+                            class="btn btn-outline-secondary">
+                        Đóng
                     </button>
                 </div>
             </div>
@@ -297,5 +330,46 @@
         $('#productNameEnter').val($text)
         $('#enterProducts').modal('show');
     }
+
+    const luuHoaDon = () => {
+        $.ajax({
+            url: "/pttk_dbclpm_war_exploded/add_bill",
+            type: "POST",
+            success: (res) => {
+                console.log(res);
+                let i = 1;
+                res.nguyenLieuNhaCungCaps.forEach((item, index) => {
+                    console.log(item);
+                    let row =
+                        '<tr>' +
+                        '<th class="text-center">' + i + '</th>' +
+                        '<td style="text-align: left;">' + item.nguyenLieu.ten + '</td>' +
+                        '<td style="text-align: end;">' + item.soLuong + '</td>' +
+                        '<td style="text-align: end;">' + item.donGia + '</td>' +
+                        '<td style="text-align: end;">' + item.tongTien + '</td>' +
+                        '</tr>'
+                    console.log(row);
+                    $('#hoaDonList').append(row);
+                    i++;
+                });
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                let mm = today.getMonth() + 1; // Months start at 0!
+                let dd = today.getDate();
+
+                if (dd < 10) dd = '0' + dd;
+                if (mm < 10) mm = '0' + mm;
+
+                const formattedToday = dd + '/' + mm + '/' + yyyy;
+
+                $("#nhanVien").text("Người nhập: " + res.nhanVien.ten)
+                $("#nameDaiLy").text("Tên đại lý: " + res.nguyenLieuNhaCungCaps[0].nhaCungCap.ten)
+                $("#createdDate").text("Ngày xuất: " + formattedToday)
+                $("#printBill").modal("show")
+
+            }
+        })
+    }
+
 </script>
 </html>

@@ -23,10 +23,6 @@
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Danh sách nhà cung cấp</title>
@@ -89,11 +85,6 @@
                 </div>
             </div>
             <div>
-                <c:if test="${not empty message}">
-                    <div class="alert alert-${alert}">
-                            ${message}
-                    </div>
-                </c:if>
                 <div style="display: flex; justify-content:end; padding: 40px 0 20px 0;">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#addProducts">
@@ -120,12 +111,13 @@
                     <tr onclick="window.location='<%=request.getContextPath()%>/nls?ncc_id=<%=nhaCungCap.getId()%>&ncc_name=<%=nhaCungCap.getTen()%>'">
                         <th class="text-center"><%=i++%>
                         </th>
-                        <td style="text-align: left;"><%=nhaCungCap.getTen()%>
+                        <td class="text-left"><%=nhaCungCap.getTen()%>
                         </td>
-                        <td style="text-align: left;"><%=nhaCungCap.getSdt()%>
+                        <td class="text-left"><%=nhaCungCap.getSdt()%>
                         </td>
                         <td class="text-end"><%=nhaCungCap.getDiaChi()%>
                         </td>
+                        <th scope="col" class="text-end"></th>
                     </tr>
                     <%
                         }
@@ -193,10 +185,6 @@
         // $("#footer").load("../../footer.html");
         // document.getElementById('search-null').style.display = 'none';
     });
-
-    function myFunction() {
-        document.getElementById("demo").style.color = "red";
-    }
 
 
 </script>
