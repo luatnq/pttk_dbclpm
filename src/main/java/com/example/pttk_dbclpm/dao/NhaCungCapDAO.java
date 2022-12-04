@@ -8,5 +8,7 @@ import java.util.List;
 public interface NhaCungCapDAO {
   List<NhaCungCap> list(String name);
 
-  void luuNcc(NhaCungCap nhaCungCap) throws SQLException;
+  NhaCungCap luuNcc(NhaCungCap nhaCungCap) throws SQLException;
+
+  boolean deleteById(Integer id) throws SQLException;
 }
