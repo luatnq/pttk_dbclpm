@@ -17,6 +17,7 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/dsNl.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/toastr.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
@@ -83,6 +84,15 @@
     session.removeAttribute(NGUYEN_LIEU_LIST);
     List<NguyenLieuNhaCungCap> nguyenLieuNhaCungCaps = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
 %>
+
+<%
+    String message = (String) session.getAttribute(MESSAGE);
+    if (Objects.nonNull(message)) {
+%>
+        <div class="alert alert-success">
+            <%=message%>
+        </div>
+<%  }%>
 <%--danh sách nguyên liệu có sẵn--%>
 <div class="d-flex px-5">
     <div class="px-5" style="width: 50%; border-right: 1px solid #ccc">
@@ -300,14 +310,6 @@
                             </tr>
                             </thead>
                             <tbody class="table-content" id="hoaDonList">
-                            <%--                            --%>
-                            <%--                            <tr>--%>
-                            <%--                                <th></th>--%>
-                            <%--                                <th></th>--%>
-                            <%--                                <th></th>--%>
-                            <%--                                <th class="text-end">Tổng</th>--%>
-                            <%--                                <th class="text-end">1.000.000</th>--%>
-                            <%--                            </tr>--%>
                             </tbody>
                         </table>
                     </div>
@@ -324,11 +326,22 @@
     </div>
 </div>
 </body>
+<script src="${pageContext.request.contextPath}/js/toastr.js"></script>
 <script type="text/javascript">
     const showModalEnter = (row) => {
         var $text = $(row).find(".nr").text();
         $('#productNameEnter').val($text)
         $('#enterProducts').modal('show');
+    }
+
+    const showToastr = (type, message) => {
+        if (type != null) {
+            if (type == 1) {
+                toastr.success(message)
+            } else {
+                toastr.error(message);
+            }
+        }
     }
 
     const luuHoaDon = () => {

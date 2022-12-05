@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.example.pttk_dbclpm.constant.Constant.Web.*;
+import static java.lang.System.out;
 
 public class ControllerServlet extends HttpServlet {
 
@@ -142,7 +143,6 @@ public class ControllerServlet extends HttpServlet {
     session.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
     session.setAttribute(NHA_CUNG_CAP_ID, nccId);
     request.getRequestDispatcher("GdDanhSachNL.jsp").forward(request, response);
-
   }
 
 
@@ -165,6 +165,7 @@ public class ControllerServlet extends HttpServlet {
           tenNguyenLieu)
     );
     session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
+    session.setAttribute(MESSAGE, "Thêm mới thành công!");
     showNguyenLieuList(request, response);
 
   }
@@ -205,5 +206,19 @@ public class ControllerServlet extends HttpServlet {
       totalMoney += nguyenLieuNhaCungCap.getDonGia() * nguyenLieuNhaCungCap.getDonGia();
     }
     return totalMoney;
+  }
+
+//  private void pushMessage(String type, String message, HttpServletRequest request, String page) {
+//    request.setAttribute(TYPE_MESSAGE, type);
+//    request.setAttribute(MESSAGE, message);
+//
+//    out.println("<script type=\"text/javascript\">");
+//    out.println("toastr.success( message )");
+//    out.println("location='" + page + "';");
+//    out.println("</script>");
+//  }
+
+  private void checkLogin(HttpServletRequest request, HttpServletResponse response) {
+
   }
 }

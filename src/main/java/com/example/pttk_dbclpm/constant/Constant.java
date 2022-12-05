@@ -17,7 +17,8 @@ public class Constant {
     public static String TEN_NHA_CUNG_CAP = "ncc_name";
     public static String NHAN_VIEN_LOGIN = "nhan_vien";
     public static String HOA_DON_NGUYEN_LIEU = "hoa_don";
-
     public static String HOA_DON_THANH_CONG = "hoa_don_success";
+    public static String TYPE_MESSAGE = "type_message";
+    public static String MESSAGE = "message";
   }
 }
