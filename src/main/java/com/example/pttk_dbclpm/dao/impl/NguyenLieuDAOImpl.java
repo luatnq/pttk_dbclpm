@@ -3,6 +3,7 @@ package com.example.pttk_dbclpm.dao.impl;
 import com.example.pttk_dbclpm.dao.DAO;
 import com.example.pttk_dbclpm.dao.NguyenLieuDAO;
 import com.example.pttk_dbclpm.entity.NguyenLieu;
+import com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
   }
 
 
-  public void luuNguyenLieu(String tenNguyenLieu, Integer nccId) throws SQLException {
+  public NguyenLieuNhaCungCap luuNguyenLieu(String tenNguyenLieu, Integer nccId) throws SQLException {
     Connection conn = null;
     try {
       conn = super.connection;
@@ -77,14 +78,9 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
         selectNguyenLieu.setString(1, tenNguyenLieu);
         Integer nguyenLieuId = null;
         ResultSet resultSet = selectNguyenLieu.executeQuery();
+
         if (resultSet.next()) {
           nguyenLieuId = resultSet.getInt("id");
-          PreparedStatement insertNguyenLieuNhaCungCap = conn.prepareStatement(INSERT_NGUYEN_LIEU_NHA_CUNG_CAP);
-          insertNguyenLieuNhaCungCap.setInt(1, nccId);
-          insertNguyenLieuNhaCungCap.setInt(2, nguyenLieuId);
-          int resultInsert = insertNguyenLieuNhaCungCap.executeUpdate();
-          if (resultInsert == 0) throw new SQLException();
-
         } else {
 
           PreparedStatement insertNguyenLieu = conn.prepareStatement(INSERT_NGUYEN_LIEU, Statement.RETURN_GENERATED_KEYS);
@@ -94,15 +90,26 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
           try (ResultSet generatedKey = insertNguyenLieu.getGeneratedKeys()) {
             if (generatedKey.next()) {
               nguyenLieuId = generatedKey.getInt(1);
-              PreparedStatement insertNguyenLieuNhaCungCap = conn.prepareStatement(INSERT_NGUYEN_LIEU_NHA_CUNG_CAP);
-              insertNguyenLieuNhaCungCap.setInt(1, nccId);
-              insertNguyenLieuNhaCungCap.setInt(2, nguyenLieuId);
-              int resultInsert = insertNguyenLieuNhaCungCap.executeUpdate();
-
-              if (resultInsert == 0) throw new SQLException();
             } else throw new SQLException();
           }
         }
+
+        PreparedStatement insertNguyenLieuNhaCungCap = conn.prepareStatement(
+              INSERT_NGUYEN_LIEU_NHA_CUNG_CAP,
+              Statement.RETURN_GENERATED_KEYS
+        );
+        insertNguyenLieuNhaCungCap.setInt(1, nccId);
+        insertNguyenLieuNhaCungCap.setInt(2, nguyenLieuId);
+        int resultInsert = insertNguyenLieuNhaCungCap.executeUpdate();
+        if (resultInsert == 0) throw new SQLException();
+        Integer idNguyenLieuNhaCungCap = null;
+        try (ResultSet generatedKey = insertNguyenLieuNhaCungCap.getGeneratedKeys()) {
+          if (generatedKey.next()) {
+            idNguyenLieuNhaCungCap = generatedKey.getInt(1);
+          } else throw new SQLException();
+        }
+
+        return new NguyenLieuNhaCungCap(idNguyenLieuNhaCungCap, nccId, tenNguyenLieu, nguyenLieuId);
       }
       conn.commit();
 
@@ -112,6 +119,8 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
     } finally {
       conn.setAutoCommit(true);
     }
+
+    return null;
   }
 
 

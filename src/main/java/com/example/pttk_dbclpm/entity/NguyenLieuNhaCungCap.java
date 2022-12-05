@@ -20,7 +20,15 @@ public class NguyenLieuNhaCungCap {
     this.nguyenLieu = nguyenLieu;
   }
 
-  public NguyenLieuNhaCungCap(Integer soLuong, Integer donGia, Integer nhaCungCapId, String tenNhaCungCap,Integer nguyenLieuId, String tenNguyenLieu) {
+  public NguyenLieuNhaCungCap(Integer id, Integer nhaCungCapId, String tenNguyenLieu, Integer idNguyenLieu) {
+    this.id = id;
+    this.soLuong = 0;
+    this.donGia = 0;
+    this.nhaCungCap = new NhaCungCap(nhaCungCapId);
+    this.nguyenLieu = new NguyenLieu(idNguyenLieu, tenNguyenLieu);
+  }
+
+  public NguyenLieuNhaCungCap(Integer soLuong, Integer donGia, Integer nhaCungCapId, String tenNhaCungCap, Integer nguyenLieuId, String tenNguyenLieu) {
     this.soLuong = soLuong;
     this.donGia = donGia;
     this.nhaCungCap = new NhaCungCap(nhaCungCapId, tenNhaCungCap);
