@@ -19,7 +19,6 @@ public class NhaCungCapDAOImpl extends DAO implements NhaCungCapDAO {
 
   String INSERT_NHA_CUNG_CAP = "INSERT INTO tblNhaCungCap(ten, diaChi, sdt) VALUES ( ?, ?, ?)";
 
-  String DELETE_BY_ID = "DELETE FROM tblNhaCungCap ncc WHERE ncc.id = ?";
 
   public NhaCungCapDAOImpl() {
     super();
@@ -87,24 +86,4 @@ public class NhaCungCapDAOImpl extends DAO implements NhaCungCapDAO {
     }
   }
 
-  public boolean deleteById(Integer id) throws SQLException {
-    Connection conn = null;
-    try {
-      conn = super.connection;
-      conn.setAutoCommit(false);
-
-      PreparedStatement preparedStatement = conn.prepareStatement(DELETE_BY_ID);
-      preparedStatement.setInt(1, id);
-
-      int row = preparedStatement.executeUpdate();
-      if (row == 0) throw new SQLException();
-      conn.commit();
-      return true;
-    } catch (SQLException e) {
-      conn.rollback();
-      throw new RuntimeException(e);
-    } finally {
-      conn.setAutoCommit(true);
-    }
-  }
 }

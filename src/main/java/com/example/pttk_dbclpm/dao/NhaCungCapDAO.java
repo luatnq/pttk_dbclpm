@@ -9,6 +9,4 @@ public interface NhaCungCapDAO {
   List<NhaCungCap> list(String name);
 
   NhaCungCap luuNcc(NhaCungCap nhaCungCap) throws SQLException;
-
-  boolean deleteById(Integer id) throws SQLException;
 }

@@ -1,6 +1,7 @@
 import com.example.pttk_dbclpm.dao.NhaCungCapDAO;
 import com.example.pttk_dbclpm.dao.impl.NhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.entity.NhaCungCap;
+import dao.impl.NhaCungCapDAOImplTest;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -9,8 +10,8 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class NhaCungCapDAOTest {
-
   private NhaCungCapDAO nhaCungCapDAO = new NhaCungCapDAOImpl();
+  private dao.NhaCungCapDAOTest nhaCungCapDAOTest = new NhaCungCapDAOImplTest();
 
   /**
    * Tìm kiếm nhà cung cấp có tên "Long hải" đã tồn tại trong database
@@ -43,6 +44,7 @@ public class NhaCungCapDAOTest {
 
   /**
    * Thêm mới nhà cung cấp với thông tin hợp lệ
+   *
    * @throws SQLException
    */
   @Test
@@ -53,11 +55,12 @@ public class NhaCungCapDAOTest {
     assertEquals(nhaCungCapInput.getTen(), nhaCungCapRes.getTen());
     assertEquals(nhaCungCapInput.getDiaChi(), nhaCungCapRes.getDiaChi());
     assertEquals(nhaCungCapInput.getSdt(), nhaCungCapRes.getSdt());
-    nhaCungCapDAO.deleteById(nhaCungCapRes.getId());
+    assertEquals(true, nhaCungCapDAOTest.deleteById(nhaCungCapRes.getId()));
   }
 
   /**
    * Thêm mới nhà cung cấp với thông tin số điện thoại đã tồn tại trong database
+   *
    * @throws SQLException
    */
   @Test
