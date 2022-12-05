@@ -8,7 +8,7 @@ import static com.example.pttk_dbclpm.constant.Constant.DAOConstant.*;
 import static com.example.pttk_dbclpm.constant.Constant.DAOConstant.PASSWORD;
 
 public class DAO {
-  protected static DAO instance;
+//  protected static DAO instance;
   protected Connection connection;
 
   public DAO(){

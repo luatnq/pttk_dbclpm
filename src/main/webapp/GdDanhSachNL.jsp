@@ -38,9 +38,9 @@
         <div style="display: flex;justify-content: space-between; margin: 10px 40px; align-items: center;">
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
-                    <li class="breadcrumb-item"><a href="../Home/home.html">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="../QuanLyNguyenLieu/index.html">Quản lý nguyên liệu</a></li>
-                    <li class="breadcrumb-item"><a href="../DanhSachNCC/index.html">Danh sách nhà cung cấp</a></li>
+                    <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home">Trang chủ</a></li>
+                    <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home">Quản lý nguyên liệu</a></li>
+                    <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/nccs">Danh sách nhà cung cấp</a></li>
                     <li class="breadcrumb-item active"><a href="#">Danh sách nguyên liệu</a></li>
                 </ol>
             </nav>
@@ -87,15 +87,7 @@
     List<NguyenLieuNhaCungCap> nguyenLieuNhaCungCaps = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
 %>
 
-<%
-    String message = (String) session.getAttribute(MESSAGE);
-    if (Objects.nonNull(message)) {
-%>
-<div class="alert alert-success">
-    <%=message%>
-</div>
-<% session.removeAttribute(MESSAGE);
-}%>
+
 <%--danh sách nguyên liệu có sẵn--%>
 <div class="d-flex px-5">
     <div class="px-5" style="width: 50%; border-right: 1px solid #ccc">
@@ -180,10 +172,34 @@
             </tbody>
         </table>
     </div>
-</div>
 
+    <%--    message noti--%>
+    <%
+        String message = (String) session.getAttribute(MESSAGE);
+        String typeMessage = (String) session.getAttribute(TYPE_MESSAGE);
+        if (Objects.nonNull(message) && Objects.nonNull(typeMessage)) {
+    %>
+    <div id="message" class="alert alert-<%=typeMessage%>"
+         style="position: absolute; top: 90px; right: -1px; width: 500px;">
+        <%=message%>
+    </div>
+    <script>
+        console.log("<%=typeMessage%>")
+        $("#message").hide()
+        $("#message").show()
+        setTimeout(() => {
+            $("#message").hide()
+        }, 1000)
+    </script>
+    <%
+            session.removeAttribute(MESSAGE);
+            session.removeAttribute(TYPE_MESSAGE);
+    }%>
+
+</div>
 <!-- Modal nhập nguyên liệu-->
-<div class="modal fade" id="enterProducts" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="enterProducts" tabindex="-1" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content custum-modal">
             <div class="modal-body">
@@ -221,7 +237,8 @@
                                 class="btn btn-outline-secondary">Hủy bỏ
                         </button>
                         <input type="submit" value="OK" data-bs-dismiss="modal"
-                               style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">
+                               style="padding: 8px 20px; border-radius: 10px; width: 150px"
+                               class="btn btn-primary">
                     </div>
                 </form>
             </div>
@@ -259,7 +276,8 @@
                             Hủy bỏ
                         </button>
                         <input type="submit" value="OK" data-bs-dismiss="modal"
-                               style="padding: 8px 20px; border-radius: 10px; width: 150px" class="btn btn-primary">
+                               style="padding: 8px 20px; border-radius: 10px; width: 150px"
+                               class="btn btn-primary">
                     </div>
                 </form>
             </div>

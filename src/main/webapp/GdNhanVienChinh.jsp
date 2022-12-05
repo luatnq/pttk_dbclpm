@@ -26,37 +26,61 @@
             <div class="col-1">
                 <button type="button" class="btn btn-primary funciton">
                     QUẢN LÝ DỊCH VỤ LÀM ĐẸP
-                    <img src="./images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
+                    <img src="${pageContext.request.contextPath}/images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
                 </button>
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-primary funciton">
                     QUẢN LÝ ĐẶT LỊCH
-                    <img src="./images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
+                    <img src="${pageContext.request.contextPath}/images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
                 </button>
             </div>
-            <div class="col-1">
-                <button type="button" class="btn btn-primary funciton" onclick="window.location='<%=request.getContextPath()%>/nccs'">
-                    QUẢN LÝ NGUYÊN LIỆU
-                    <img src="./images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
-                </button>
-            </div>
+
             <div class="col-1">
                 <button type="button" class="btn btn-primary funciton">
                     QUẢN LÝ HOÁ ĐƠN
-                    <img src="./images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
+                    <img src="${pageContext.request.contextPath}/images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
                 </button>
             </div>
             <div class="col-1">
                 <button type="button" class="btn btn-primary funciton">
                     QUẢN LÝ CÔNG VIỆC
-                    <img src="./images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
+                    <img src="${pageContext.request.contextPath}/images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
                 </button>
             </div>
+            <div class="col-1 position-relative parent-btn">
+                <button type="button" class="btn btn-primary funciton" data-bs-container="body"
+                        data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
+                    QUẢN LÝ NGUYÊN LIỆU
+                    <img src="${pageContext.request.contextPath}/images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
+                </button>
+
+                <div class="position-absolute sub-select-btn" style="top: 75px; right: 10px; padding-top:20px;">
+                    <div class="justify-content-start" style="width: 280px">
+                        <%--                        <a href="../DanhSachNCC/index.html">--%>
+                        <button type="button"
+                                onclick="window.location='<%=request.getContextPath()%>/nccs'"
+                                class="btn btn btn-primary funciton my-2"
+                                data-bs-container="body"
+                                data-bs-toggle="popover" data-bs-placement="bottom"
+                                data-bs-content="Bottom popover">
+                            <img src="${pageContext.request.contextPath}/images/right.png" alt="" width="16px"
+                                 style="float: right; margin: 5px 0 5px 0">
+                            NHẬP NGUYÊN LIỆU
+                        </button>
+                        <button type="button" class="btn btn-primary funciton my-2">
+                            DANH SÁCH NGUYÊN LIỆU
+                            <img src="${pageContext.request.contextPath}/images/right.png" alt="" width="16px"
+                                 style="float: right; margin: 5px 0 5px 0">
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-1">
                 <button type="button" class="btn btn-primary funciton">
                     QUẢN LÝ NGƯỜI DÙNG
-                    <img src="./images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
+                    <img src="${pageContext.request.contextPath}/images/right.png" alt="" width="16px" style="float: right; margin: 5px 0 5px 0">
                 </button>
             </div>
         </div>

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.pttk_dbclpm.constant.Constant.Message.*;
 import static com.example.pttk_dbclpm.constant.Constant.Web.*;
-import static java.lang.System.out;
 
 public class ControllerServlet extends HttpServlet {
 
@@ -42,45 +42,41 @@ public class ControllerServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException {
-    try {
-      String action = request.getServletPath();
-      switch (action) {
-        case "/login":
-          showFormLogin(request, response);
-          break;
-        case "/check_login":
-          login(request, response);
-          break;
-        case "/home":
-          showHome(request, response);
-          break;
-        case "/nccs":
-          showNhaCungCapList(request, response);
-          break;
-        case "/nccs_search":
-          showNhaCungCapList(request, response);
-          break;
-        case "/nccs_add":
-          luuNcc(request, response);
-          break;
-        case "/nls":
-          showNguyenLieuList(request, response);
-          break;
-        case "/nls_add":
-          addNguyenLieu(request, response);
-          break;
-        case "/nls_search":
-          showNguyenLieuList(request, response);
-          break;
-        case "/nls_pick":
-          pushNguyenLieuDaChon(request, response);
-          break;
-        case "/add_bill":
-          luuHoaDon(request, response);
-          break;
-      }
-    } catch (SQLException e) {
-      throw new RuntimeException(e);
+    String action = request.getServletPath();
+    switch (action) {
+      case "/login":
+        showFormLogin(request, response);
+        break;
+      case "/check_login":
+        login(request, response);
+        break;
+      case "/home":
+        showHome(request, response);
+        break;
+      case "/nccs":
+        showNhaCungCapList(request, response);
+        break;
+      case "/nccs_search":
+        showNhaCungCapList(request, response);
+        break;
+      case "/nccs_add":
+        luuNcc(request, response);
+        break;
+      case "/nls":
+        showNguyenLieuList(request, response);
+        break;
+      case "/nls_add":
+        addNguyenLieu(request, response);
+        break;
+      case "/nls_search":
+        showNguyenLieuList(request, response);
+        break;
+      case "/nls_pick":
+        pushNguyenLieuDaChon(request, response);
+        break;
+      case "/add_bill":
+        luuHoaDon(request, response);
+        break;
     }
   }
 
@@ -119,14 +115,21 @@ public class ControllerServlet extends HttpServlet {
     request.getRequestDispatcher("GdDanhSachNCC.jsp").forward(request, response);
   }
 
-  private void luuNcc(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-    String ten = request.getParameter("producerName");
-    String diaChi = request.getParameter("producerAddress");
-    String sdt = request.getParameter("producerPhone");
+  private void luuNcc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    try {
+      String ten = request.getParameter("producerName");
+      String diaChi = request.getParameter("producerAddress");
+      String sdt = request.getParameter("producerPhone");
 
-    NhaCungCap nhaCungCap = new NhaCungCap(ten, diaChi, sdt);
-    nhaCungCapDAO.luuNcc(nhaCungCap);
-    showNhaCungCapList(request, response);
+      NhaCungCap nhaCungCapInput = new NhaCungCap(ten, diaChi, sdt);
+      NhaCungCap nhaCungCap = nhaCungCapDAO.luuNcc(nhaCungCapInput);
+      if (Objects.isNull(nhaCungCap)) pushMessage(FAIL, FAIL_CONTENT, request);
+      else pushMessage(SUCCESS, SUCCESS_CONTENT, request);
+      showNhaCungCapList(request, response);
+    } catch (SQLException e) {
+      pushMessage(FAIL, FAIL_CONTENT, request);
+      showNguyenLieuList(request, response);
+    }
   }
 
   private void showNguyenLieuList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -165,38 +168,51 @@ public class ControllerServlet extends HttpServlet {
           tenNguyenLieu)
     );
     session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
+    session.setAttribute(TYPE_MESSAGE, SUCCESS);
     session.setAttribute(MESSAGE, "Thêm mới thành công!");
     showNguyenLieuList(request, response);
 
   }
 
 
-  private void addNguyenLieu(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-    HttpSession session = request.getSession();
-    Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
-    String productName = request.getParameter("productNewName").trim();
-    nguyenLieuDAO.luuNguyenLieu(productName, nccId);
-    showNguyenLieuList(request, response);
+  private void addNguyenLieu(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    try {
+      HttpSession session = request.getSession();
+      Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
+      String productName = request.getParameter("productNewName").trim();
+      NguyenLieuNhaCungCap nguyenLieu = nguyenLieuDAO.luuNguyenLieu(productName, nccId);
+      if (Objects.isNull(nguyenLieu)) pushMessage(FAIL, FAIL_CONTENT, request);
+      else pushMessage(SUCCESS, SUCCESS_CONTENT, request);
+      showNguyenLieuList(request, response);
+    } catch (SQLException e) {
+      pushMessage(FAIL, FAIL_CONTENT, request);
+      showNguyenLieuList(request, response);
+    }
   }
 
-  private void luuHoaDon(HttpServletRequest request, HttpServletResponse response) throws SQLException, ServletException, IOException {
-    HttpSession session = request.getSession();
-    NhanVien nhanVien = (NhanVien) session.getAttribute(NHAN_VIEN_LOGIN);
-    List<NguyenLieuNhaCungCap> nguyenLieus = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
-    HoaDonNguyenLieu hoaDonNguyenLieu = new HoaDonNguyenLieu(
-          nhanVien.getId(),
-          nhanVien.getTen(),
-          calTotalMoney(nguyenLieus),
-          null,
-          nguyenLieus
-    );
-    session.setAttribute(HOA_DON_NGUYEN_LIEU, hoaDonNguyenLieu);
-    nguyenLieus = new ArrayList<>();
-    session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
-    hoaDonNguyenLieuDAO.luuHoaDon(hoaDonNguyenLieu);
-    session.setAttribute(HOA_DON_THANH_CONG, hoaDonNguyenLieu);
-    JsonHelper.convert(hoaDonNguyenLieu, response);
-//    showNguyenLieuList(request, response);
+  private void luuHoaDon(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    try {
+      HttpSession session = request.getSession();
+      NhanVien nhanVien = (NhanVien) session.getAttribute(NHAN_VIEN_LOGIN);
+      List<NguyenLieuNhaCungCap> nguyenLieus = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
+      HoaDonNguyenLieu hoaDonNguyenLieu = new HoaDonNguyenLieu(
+            nhanVien.getId(),
+            nhanVien.getTen(),
+            calTotalMoney(nguyenLieus),
+            null,
+            nguyenLieus
+      );
+      session.setAttribute(HOA_DON_NGUYEN_LIEU, hoaDonNguyenLieu);
+      nguyenLieus = new ArrayList<>();
+      session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
+      hoaDonNguyenLieuDAO.luuHoaDon(hoaDonNguyenLieu);
+      session.setAttribute(HOA_DON_THANH_CONG, hoaDonNguyenLieu);
+      JsonHelper.convert(hoaDonNguyenLieu, response);
+
+    } catch (SQLException e) {
+      pushMessage(FAIL, FAIL_CONTENT, request);
+      showNguyenLieuList(request, response);
+    }
   }
 
   private Integer calTotalMoney(List<NguyenLieuNhaCungCap> nguyenLieus) {
@@ -208,17 +224,9 @@ public class ControllerServlet extends HttpServlet {
     return totalMoney;
   }
 
-//  private void pushMessage(String type, String message, HttpServletRequest request, String page) {
-//    request.setAttribute(TYPE_MESSAGE, type);
-//    request.setAttribute(MESSAGE, message);
-//
-//    out.println("<script type=\"text/javascript\">");
-//    out.println("toastr.success( message )");
-//    out.println("location='" + page + "';");
-//    out.println("</script>");
-//  }
-
-  private void checkLogin(HttpServletRequest request, HttpServletResponse response) {
-
+  private void pushMessage(String type, String message, HttpServletRequest request) {
+    request.setAttribute(TYPE_MESSAGE, type);
+    request.setAttribute(MESSAGE, message);
   }
+
 }

@@ -24,7 +24,8 @@ public class Constant {
 
   public static class Message {
     public static String SUCCESS = "success";
-
     public static String FAIL = "danger";
+    public static String SUCCESS_CONTENT = "Thêm mới thành công";
+    public static String FAIL_CONTENT = "Thêm mới thất bại";
   }
 }
