@@ -15,6 +15,13 @@ public class HoaDon {
     this.moTa = moTa;
   }
 
+  public HoaDon(Integer idHoaDon, Integer nhanVienId, String tenNhanVien, Integer tongTien, String moTa) {
+    this.id = idHoaDon;
+    this.nhanVien = new NhanVien(nhanVienId, tenNhanVien);
+    this.tongTien = tongTien;
+    this.moTa = moTa;
+  }
+
   public HoaDon(
         Integer id,
         NhanVien nhanVien,

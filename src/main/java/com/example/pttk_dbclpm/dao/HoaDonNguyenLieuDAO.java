@@ -5,5 +5,5 @@ import com.example.pttk_dbclpm.entity.HoaDonNguyenLieu;
 import java.sql.SQLException;
 
 public interface HoaDonNguyenLieuDAO {
-  void luuHoaDon(HoaDonNguyenLieu hoaDonNguyenLieu) throws SQLException;
+  HoaDonNguyenLieu luuHoaDon(HoaDonNguyenLieu hoaDonNguyenLieu) throws SQLException;
 }

@@ -21,7 +21,7 @@ public class HoaDonNguyenLieuDAOImpl extends DAO implements HoaDonNguyenLieuDAO 
     super();
   }
 
-  public void luuHoaDon(HoaDonNguyenLieu hoaDonNguyenLieu) throws SQLException {
+  public HoaDonNguyenLieu luuHoaDon(HoaDonNguyenLieu hoaDonNguyenLieu) throws SQLException {
     Connection conn = null;
     try {
       conn = super.connection;
@@ -59,6 +59,14 @@ public class HoaDonNguyenLieuDAOImpl extends DAO implements HoaDonNguyenLieuDAO 
 
           if (rows.length == 0) throw new SQLException();
           conn.commit();
+
+          return new HoaDonNguyenLieu(
+                idHoaDon,
+                hoaDonNguyenLieu.getNhanVien().getId(),
+                hoaDonNguyenLieu.getTongTien(),
+                nguyenLieuNhaCungCaps
+          );
+
         } else throw new SQLException();
       }
     } catch (SQLException e) {
