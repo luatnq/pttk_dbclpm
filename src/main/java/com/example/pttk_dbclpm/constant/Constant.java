@@ -21,4 +21,10 @@ public class Constant {
     public static String TYPE_MESSAGE = "type_message";
     public static String MESSAGE = "message";
   }
+
+  public static class Message {
+    public static String SUCCESS = "success";
+
+    public static String FAIL = "danger";
+  }
 }

@@ -23,7 +23,9 @@
 
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
 
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
     <title>Danh sách nguyên liệu</title>
 </head>
 <%
@@ -89,10 +91,11 @@
     String message = (String) session.getAttribute(MESSAGE);
     if (Objects.nonNull(message)) {
 %>
-        <div class="alert alert-success">
-            <%=message%>
-        </div>
-<%  }%>
+<div class="alert alert-success">
+    <%=message%>
+</div>
+<% session.removeAttribute(MESSAGE);
+}%>
 <%--danh sách nguyên liệu có sẵn--%>
 <div class="d-flex px-5">
     <div class="px-5" style="width: 50%; border-right: 1px solid #ccc">
@@ -332,16 +335,6 @@
         var $text = $(row).find(".nr").text();
         $('#productNameEnter').val($text)
         $('#enterProducts').modal('show');
-    }
-
-    const showToastr = (type, message) => {
-        if (type != null) {
-            if (type == 1) {
-                toastr.success(message)
-            } else {
-                toastr.error(message);
-            }
-        }
     }
 
     const luuHoaDon = () => {
