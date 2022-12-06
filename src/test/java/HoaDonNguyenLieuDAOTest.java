@@ -14,7 +14,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class HoaDonNguyenLieuDAOTest {
 
@@ -49,13 +50,13 @@ public class HoaDonNguyenLieuDAOTest {
           nguyenLieus
     );
 
-    List<NguyenLieu> nguyenLieuListExist = nguyenLieuDAO.list("Sơn móng tay", 1);
+    List<NguyenLieu> nguyenLieuListExist = nguyenLieuDAO.list(new NguyenLieuNhaCungCap("Sơn móng tay", 1));
 
     HoaDonNguyenLieu hoaDonNguyenLieu = hoaDonNguyenLieuDAO.luuHoaDon(hoaDonNguyenLieuInput);
     assertNotNull(hoaDonNguyenLieu.getId());
     assertEquals(tongTien, hoaDonNguyenLieu.getTongTien());
 
-    List<NguyenLieu> nguyenLieuListFetch = nguyenLieuDAO.list("Sơn móng tay", 1);
+    List<NguyenLieu> nguyenLieuListFetch = nguyenLieuDAO.list(new NguyenLieuNhaCungCap("Sơn móng tay", 1));
 
     Integer soLuongFetch = nguyenLieuListExist.get(0).getSoLuong() + nguyenLieuNhaCungCap.getSoLuong();
     assertEquals(soLuongFetch, nguyenLieuListFetch.get(0).getSoLuong());

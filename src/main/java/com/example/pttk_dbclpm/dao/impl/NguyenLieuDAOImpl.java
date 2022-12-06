@@ -40,14 +40,19 @@ public class NguyenLieuDAOImpl extends DAO implements NguyenLieuDAO {
     super();
   }
 
-  public List<NguyenLieu> list(String name, Integer nccId) {
+  public List<NguyenLieu> list(NguyenLieuNhaCungCap nguyenLieuNhaCungCap) {
     Connection conn = null;
     List<NguyenLieu> nguyenLieus = new ArrayList<>();
     try {
       conn = super.connection;
-      PreparedStatement preparedStatement = conn.prepareStatement(Objects.nonNull(name) ? SELECT_SEARCH : SELECT_ALL);
-      preparedStatement.setInt(1, nccId);
-      if (Objects.nonNull(name)) preparedStatement.setString(2, "%" + name + "%");
+      PreparedStatement preparedStatement = conn.prepareStatement(
+            Objects.nonNull(nguyenLieuNhaCungCap.getNguyenLieu().getTen()) ? SELECT_SEARCH : SELECT_ALL
+      );
+      preparedStatement.setInt(1, nguyenLieuNhaCungCap.getNhaCungCap().getId());
+      if (Objects.nonNull(nguyenLieuNhaCungCap.getNguyenLieu().getTen())) {
+        preparedStatement.setString(2, "%" + nguyenLieuNhaCungCap.getNguyenLieu().getTen() + "%");
+      }
+
       ResultSet rs = preparedStatement.executeQuery();
 
       while (rs.next()) {

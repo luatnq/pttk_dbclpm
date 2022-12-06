@@ -12,6 +12,13 @@ public class NguyenLieuNhaCungCap {
   public NguyenLieuNhaCungCap() {
   }
 
+  public NguyenLieuNhaCungCap(String tenNguyenLieu, Integer nccId ){
+    this.nguyenLieu = new NguyenLieu();
+    this.nguyenLieu.setTen(tenNguyenLieu);
+    this.nhaCungCap = new NhaCungCap();
+    this.nhaCungCap.setId(nccId);
+  }
+
   public NguyenLieuNhaCungCap(Integer id, Integer soLuong, Integer donGia, NhaCungCap nhaCungCap, NguyenLieu nguyenLieu) {
     this.id = id;
     this.soLuong = soLuong;

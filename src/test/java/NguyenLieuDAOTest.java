@@ -20,7 +20,7 @@ public class NguyenLieuDAOTest {
    */
   @Test
   public void listTest1() {
-    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(null, 1);
+    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(new NguyenLieuNhaCungCap(null, 1));
     assertNotEquals(0, nguyenLieus.size());
   }
 
@@ -31,7 +31,7 @@ public class NguyenLieuDAOTest {
   @Test
   public void listTest2() {
     String tenNguyenLieu = "Sơn móng tay";
-    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(tenNguyenLieu, 1);
+    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(new NguyenLieuNhaCungCap(tenNguyenLieu, 1));
     assertEquals(tenNguyenLieu, nguyenLieus.get(0).getTen());
   }
 
@@ -42,7 +42,7 @@ public class NguyenLieuDAOTest {
   @Test
   public void listTest3() {
     String tenNguyenLieu = "Sơn móng tay 3";
-    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(tenNguyenLieu, 1);
+    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(new NguyenLieuNhaCungCap(tenNguyenLieu, 1));
     assertEquals(0, nguyenLieus.size());
   }
 

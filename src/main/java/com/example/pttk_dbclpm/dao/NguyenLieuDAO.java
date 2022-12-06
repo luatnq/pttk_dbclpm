@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface NguyenLieuDAO {
-  List<NguyenLieu> list(String name, Integer nccId);
+  List<NguyenLieu> list(NguyenLieuNhaCungCap nguyenLieuNhaCungCap);
 
   NguyenLieuNhaCungCap luuNguyenLieu(String tenNguyenLieu, Integer nccId) throws SQLException;
 

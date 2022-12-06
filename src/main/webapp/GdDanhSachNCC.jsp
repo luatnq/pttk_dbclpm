@@ -51,7 +51,7 @@
             <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home">Trang chủ</a></li>
-                    <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home">Quản lý nguyên liệu</a>
+                    <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home">Nhập nguyên liệu</a>
                     </li>
                     <li class="breadcrumb-item active"><a href="#">Danh sách nhà cung cấp</a></li>
                 </ol>
@@ -70,16 +70,6 @@
     List<NhaCungCap> nhaCungCaps = (List<NhaCungCap>) session.getAttribute(NHA_CUNG_CAP_LIST);
     session.removeAttribute(NHA_CUNG_CAP_LIST);
 %>
-
-<%--<%--%>
-<%--    String message = (String) session.getAttribute(MESSAGE);--%>
-<%--    if (Objects.nonNull(message)) {--%>
-<%--%>--%>
-<%--<div class="alert alert-"<%=session.getAttribute(SUCCESS)%>>--%>
-<%--    <%=message%>--%>
-<%--</div>--%>
-<%--<% session.removeAttribute(MESSAGE);--%>
-<%--}%>--%>
 
 <div class="container1 pb-5">
     <div class="row" style="justify-content: center; width: 100vw;">
@@ -166,99 +156,21 @@
         $("#message").show()
         setTimeout(() => {
             $("#message").hide()
-        }, 1000)
+        }, 2000)
     </script>
     <%
             session.removeAttribute(MESSAGE);
             session.removeAttribute(TYPE_MESSAGE);
         }%>
 </div>
+<jsp:include page="GdThemMoiNcc.jsp"/>
 
-<!-- modal thêm mới nhà cung cấp -->
-<div class="modal fade" id="addProducts" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content custum-modal">
-            <div class="modal-body">
-                <div style="text-align: right">
-                    <button style="background-color: #d6d5d5; border-radius: 50%; font-size: 12px; padding: 7px;
-                                " type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <form action="<%=request.getContextPath()%>/nccs_add" name="addProduct" method="get"
-                      onsubmit="return validateForm()">
-                    <div class="title-modal-body">Thêm mới nhà cung cấp</div>
-                    <div style="padding: 20px 0;">
-                        <b-row style="display: flex; justify-content: space-between;" class="mb-3">
-                            <div style="width: 48%;">
-                                <label for="producerName" class="form-label">Tên nhà cung cấp <span
-                                        style="color: red;">*</span>
-                                </label>
-                                <input type="text" name="producerName" class="form-control" id="producerName"
-                                       placeholder="Tên nhà cung cấp...">
-                                <p class="mb-0" id="err-name" style="color: red;"></p>
-                            </div>
-                            <div style="width: 48%;">
-                                <label for="producerPhone" class="form-label">Số điện thoại <span
-                                        style="color: red;">*</span>
-                                </label>
-                                <input type="text" name="producerPhone" class="form-control" id="producerPhone"
-                                       placeholder="Số điện thoại...">
-                                <p class="mb-0" id="err-number" style="color: red;"></p>
-                            </div>
-                        </b-row>
-                        <b-row>
-                            <div class="mb-6">
-                                <label for="producerAddress" class="form-label">Địa chỉ <span
-                                        style="color: red;">*</span>
-                                </label>
-                                <input type="text" name="producerAddress" class="form-control" id="producerAddress"
-                                       placeholder="Địa chỉ...">
-                                <p class="mb-0" id="err-address" style="color: red;"></p>
-                            </div>
-                        </b-row>
-                    </div>
-
-                    <div class="control-button" style="text-align: center;">
-                        <button type="button" data-bs-dismiss="modal"
-                                style="padding: 8px 20px; border-radius: 10px; width: 30%; margin-right: 20px;"
-                                class="btn btn-outline-secondary">
-                            Hủy bỏ
-                        </button>
-                        <input type="submit" value="Ok"
-                               style="padding: 8px 20px; border-radius: 10px; width: 30%"
-                               class="btn btn-primary">
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
 </body>
 </html>
 
 <script type="text/javascript">
     $(function () {
         $("#header").load("header.jsp");
-        // $("#footer").load("../../footer.html");
-        // document.getElementById('search-null').style.display = 'none';
     });
-
-    function validateForm() {
-        let producerName = document.forms["addProduct"]["producerName"].value;
-        let producerNumber = document.forms["addProduct"]["producerPhone"].value;
-        let producerAddress = document.forms["addProduct"]["producerAddress"].value;
-        if (producerName == "") {
-            document.querySelector("#err-name").innerHTML = "Tên nguyên liệu không được để trống";
-            $("#addProducts").modal("show");
-            return false;
-        }
-        if (producerNumber == "") {
-            document.querySelector("#err-number").innerHTML = "Số điện thoại không được để trống";
-            return false;
-        }
-        if (producerAddress == "") {
-            document.querySelector("#err-address").innerHTML = "Địa chỉ không được để trống";
-            return false;
-        }
-    }
 
 </script>

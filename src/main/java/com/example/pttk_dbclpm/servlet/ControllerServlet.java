@@ -89,6 +89,7 @@ public class ControllerServlet extends HttpServlet {
   private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    NhanVien nhanVienLogin = new NhanVien(username, password);
     NhanVien nhanVien = nhanVienDAO.login(username, password);
     if (Objects.nonNull(nhanVien)) {
       HttpSession session = request.getSession();
@@ -134,14 +135,16 @@ public class ControllerServlet extends HttpServlet {
 
   private void showNguyenLieuList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String nccIdStr = request.getParameter("ncc_id");
+    String nccName = request.getParameter("ncc_name");
     HttpSession session = request.getSession();
     Integer nccId = Objects.nonNull(nccIdStr) ? Integer.parseInt(request.getParameter("ncc_id")) :
           (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
-    if (Objects.nonNull(request.getParameter("ncc_name"))) {
-      session.setAttribute(TEN_NHA_CUNG_CAP, request.getParameter("ncc_name"));
+    if (Objects.nonNull(nccName)) {
+      session.setAttribute(TEN_NHA_CUNG_CAP, nccName);
     }
     session.removeAttribute(NHA_CUNG_CAP_ID);
-    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(request.getParameter("name"), nccId);
+
+    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(new NguyenLieuNhaCungCap(request.getParameter("name"), nccId));
     request.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
     session.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
     session.setAttribute(NHA_CUNG_CAP_ID, nccId);
@@ -169,7 +172,7 @@ public class ControllerServlet extends HttpServlet {
     );
     session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
     session.setAttribute(TYPE_MESSAGE, SUCCESS);
-    session.setAttribute(MESSAGE, "Thêm mới thành công!");
+    session.setAttribute(MESSAGE, ENTER_SUCCESS);
     showNguyenLieuList(request, response);
 
   }
@@ -195,19 +198,27 @@ public class ControllerServlet extends HttpServlet {
       HttpSession session = request.getSession();
       NhanVien nhanVien = (NhanVien) session.getAttribute(NHAN_VIEN_LOGIN);
       List<NguyenLieuNhaCungCap> nguyenLieus = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
-      HoaDonNguyenLieu hoaDonNguyenLieu = new HoaDonNguyenLieu(
-            nhanVien.getId(),
-            nhanVien.getTen(),
-            calTotalMoney(nguyenLieus),
-            null,
-            nguyenLieus
-      );
-      session.setAttribute(HOA_DON_NGUYEN_LIEU, hoaDonNguyenLieu);
-      nguyenLieus = new ArrayList<>();
-      session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
-      hoaDonNguyenLieuDAO.luuHoaDon(hoaDonNguyenLieu);
-      session.setAttribute(HOA_DON_THANH_CONG, hoaDonNguyenLieu);
-      JsonHelper.convert(hoaDonNguyenLieu, response);
+
+      if (nguyenLieus.size() == 0){
+        pushMessage(FAIL, "Lưu hóa đơn không thành công", request);
+        showNguyenLieuList(request, response);
+      }else{
+        HoaDonNguyenLieu hoaDonNguyenLieu = new HoaDonNguyenLieu(
+              nhanVien.getId(),
+              nhanVien.getTen(),
+              calTotalMoney(nguyenLieus),
+              null,
+              nguyenLieus
+        );
+        session.setAttribute(HOA_DON_NGUYEN_LIEU, hoaDonNguyenLieu);
+        nguyenLieus = new ArrayList<>();
+        session.removeAttribute(NGUYEN_LIEU_DA_CHON);
+        session.setAttribute(NGUYEN_LIEU_DA_CHON, nguyenLieus);
+        hoaDonNguyenLieuDAO.luuHoaDon(hoaDonNguyenLieu);
+        session.setAttribute(HOA_DON_THANH_CONG, hoaDonNguyenLieu);
+        JsonHelper.convert(hoaDonNguyenLieu, response);
+      }
+
 
     } catch (SQLException e) {
       pushMessage(FAIL, FAIL_CONTENT, request);
@@ -225,8 +236,9 @@ public class ControllerServlet extends HttpServlet {
   }
 
   private void pushMessage(String type, String message, HttpServletRequest request) {
-    request.setAttribute(TYPE_MESSAGE, type);
-    request.setAttribute(MESSAGE, message);
+    HttpSession session = request.getSession();
+    session.setAttribute(TYPE_MESSAGE, type);
+    session.setAttribute(MESSAGE, message);
   }
 
 }

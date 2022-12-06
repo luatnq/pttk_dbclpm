@@ -6,6 +6,10 @@ public class NhanVien extends ThanhVien implements Serializable {
   private Integer luong;
   private String sdt;
 
+  public NhanVien(String username, String password) {
+    super(username, password);
+  }
+
   public NhanVien(Integer id, String taiKhoan, String ten) {
     super(id, taiKhoan, ten);
   }
