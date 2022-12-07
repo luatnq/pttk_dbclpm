@@ -14,7 +14,7 @@ public class NhanVienDAOTest {
    */
   @Test
   public void loginTest1() {
-    NhanVien nhanVien = nhanVienDAO.login("luatnq", "123");
+    NhanVien nhanVien = nhanVienDAO.login(new NhanVien("luatnq", "123"));
     assertEquals("luatnq", nhanVien.getTaiKhoan());
   }
 
@@ -23,7 +23,7 @@ public class NhanVienDAOTest {
    */
   @Test
   public void loginTest2() {
-    NhanVien nhanVien = nhanVienDAO.login("luatnq", "1233");
+    NhanVien nhanVien = nhanVienDAO.login(new NhanVien("luatnq", "1233"));
     assertNull(nhanVien);
   }
 
@@ -32,7 +32,7 @@ public class NhanVienDAOTest {
    */
   @Test
   public void loginTest3() {
-    NhanVien nhanVien = nhanVienDAO.login("luatnq12", "123");
+    NhanVien nhanVien = nhanVienDAO.login(new NhanVien("luatnq12", "123"));
     assertNull(nhanVien);
   }
 }

@@ -89,8 +89,7 @@ public class ControllerServlet extends HttpServlet {
   private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    NhanVien nhanVienLogin = new NhanVien(username, password);
-    NhanVien nhanVien = nhanVienDAO.login(username, password);
+    NhanVien nhanVien = nhanVienDAO.login(new NhanVien(username, password));
     if (Objects.nonNull(nhanVien)) {
       HttpSession session = request.getSession();
       session.setAttribute(NHAN_VIEN_LOGIN, nhanVien);

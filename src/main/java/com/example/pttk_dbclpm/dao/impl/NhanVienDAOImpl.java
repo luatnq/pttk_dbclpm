@@ -42,16 +42,25 @@ public class NhanVienDAOImpl extends DAO implements NhanVienDAO {
     }
   }
 
-//  public NhanVien getNhanVienInfo(String username) {
-//    Connection conn = null;
-//    try {
-//      conn = super.connection;
-//      PreparedStatement preparedStatement = conn.prepareStatement(SELECT_NHANVIEN_INFO);
-//      preparedStatement.setString(1, username);
-//      ResultSet rs = preparedStatement.executeQuery();
-//      return null;
-//    } catch (SQLException e) {
-//      throw new RuntimeException(e);
-//    }
-//  }
+  public NhanVien login(NhanVien nhanVienLogin) {
+    Connection conn = null;
+    try {
+      conn = super.connection;
+      PreparedStatement preparedStatement = conn.prepareStatement(SELECT_NHANVIEN);
+      preparedStatement.setString(1, nhanVienLogin.getTaiKhoan());
+      preparedStatement.setString(2, nhanVienLogin.getMatKhau());
+      ResultSet rs = preparedStatement.executeQuery();
+      if (rs.next()) {
+        NhanVien nhanVien = new NhanVien(
+              rs.getInt("id"),
+              rs.getString("taiKhoan"),
+              rs.getString("ten")
+        );
+        return nhanVien;
+      }
+      return null;
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }
