@@ -9,4 +9,6 @@ public interface NhaCungCapDAO {
   List<NhaCungCap> list(String name);
 
   NhaCungCap luuNcc(NhaCungCap nhaCungCap) throws SQLException;
+
+  List<NhaCungCap> list(NhaCungCap nhaCungCap);
 }

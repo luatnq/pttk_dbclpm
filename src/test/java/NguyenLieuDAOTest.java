@@ -1,5 +1,7 @@
 import com.example.pttk_dbclpm.dao.NguyenLieuDAO;
+import com.example.pttk_dbclpm.dao.NguyenLieuNhaCungCapDAO;
 import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
+import com.example.pttk_dbclpm.dao.impl.NguyenLieuNhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.entity.NguyenLieu;
 import com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap;
 import dao.impl.NguyenLieuDAOImplTest;
@@ -12,6 +14,7 @@ import static org.junit.Assert.*;
 
 public class NguyenLieuDAOTest {
 
+  private NguyenLieuNhaCungCapDAO nguyenLieuNhaCungCapDAO = new NguyenLieuNhaCungCapDAOImpl();
   private NguyenLieuDAO nguyenLieuDAO = new NguyenLieuDAOImpl();
   private dao.NguyenLieuDAOTest nguyenLieuDAOTest = new NguyenLieuDAOImplTest();
 
@@ -20,7 +23,7 @@ public class NguyenLieuDAOTest {
    */
   @Test
   public void listTest1() {
-    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(new NguyenLieuNhaCungCap(null, 1));
+    List<NguyenLieuNhaCungCap> nguyenLieus = nguyenLieuNhaCungCapDAO.list(new NguyenLieuNhaCungCap(null, 1));
     assertNotEquals(0, nguyenLieus.size());
   }
 
@@ -31,8 +34,8 @@ public class NguyenLieuDAOTest {
   @Test
   public void listTest2() {
     String tenNguyenLieu = "Sơn móng tay";
-    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(new NguyenLieuNhaCungCap(tenNguyenLieu, 1));
-    assertEquals(tenNguyenLieu, nguyenLieus.get(0).getTen());
+    List<NguyenLieuNhaCungCap> nguyenLieus = nguyenLieuNhaCungCapDAO.list(new NguyenLieuNhaCungCap(tenNguyenLieu, 1));
+    assertEquals(tenNguyenLieu, nguyenLieus.get(0).getNguyenLieu().getTen());
   }
 
   /**
@@ -42,7 +45,7 @@ public class NguyenLieuDAOTest {
   @Test
   public void listTest3() {
     String tenNguyenLieu = "Sơn móng tay 3";
-    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(new NguyenLieuNhaCungCap(tenNguyenLieu, 1));
+    List<NguyenLieuNhaCungCap> nguyenLieus = nguyenLieuNhaCungCapDAO.list(new NguyenLieuNhaCungCap(tenNguyenLieu, 1));
     assertEquals(0, nguyenLieus.size());
   }
 
@@ -52,7 +55,7 @@ public class NguyenLieuDAOTest {
   @Test
   public void getIdNguyenLieuTest1() {
     String tenNguyenLieu = "Sơn móng tay";
-    Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(tenNguyenLieu);
+    Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(new NguyenLieu(tenNguyenLieu));
     assertNotNull(idNguyenLieu);
   }
 
@@ -62,7 +65,7 @@ public class NguyenLieuDAOTest {
   @Test
   public void getIdNguyenLieuTest2() {
     String tenNguyenLieu = "Sơn móng tay 3";
-    Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(tenNguyenLieu);
+    Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(new NguyenLieu(tenNguyenLieu));
     assertNull(idNguyenLieu);
   }
 
@@ -71,7 +74,7 @@ public class NguyenLieuDAOTest {
    */
   @Test
   public void createNguyenLieuTest1() throws SQLException {
-    NguyenLieuNhaCungCap nguyenLieuNhaCungCap = nguyenLieuDAO.luuNguyenLieu("Sơn móng tay", 1);
+    NguyenLieuNhaCungCap nguyenLieuNhaCungCap = nguyenLieuNhaCungCapDAO.luuNguyenLieu(new NguyenLieuNhaCungCap("Sơn móng tay", 1));
     assertNull(nguyenLieuNhaCungCap);
   }
 
@@ -81,7 +84,8 @@ public class NguyenLieuDAOTest {
    */
   @Test
   public void createNguyenLieuTest2() throws SQLException {
-    NguyenLieuNhaCungCap nguyenLieuNhaCungCap = nguyenLieuDAO.luuNguyenLieu("Dầu thơm", 1);
+//    NguyenLieuNhaCungCap nguyenLieuNhaCungCap = nguyenLieuDAO.luuNguyenLieu("Dầu thơm", 1);
+    NguyenLieuNhaCungCap nguyenLieuNhaCungCap = nguyenLieuNhaCungCapDAO.luuNguyenLieu(new NguyenLieuNhaCungCap("Dầu thơm", 1));
     assertEquals("Dầu thơm", nguyenLieuNhaCungCap.getNguyenLieu().getTen());
     assertEquals(Integer.valueOf(1), nguyenLieuNhaCungCap.getNhaCungCap().getId());
     assertEquals(true, nguyenLieuDAOTest.deleteById(nguyenLieuNhaCungCap.getId()));
@@ -92,7 +96,7 @@ public class NguyenLieuDAOTest {
    */
   @Test
   public void createNguyenLieuTest3() throws SQLException {
-    NguyenLieuNhaCungCap nguyenLieuNhaCungCap = nguyenLieuDAO.luuNguyenLieu("Dầu thơm bưởi Việt Nam", 1);
+    NguyenLieuNhaCungCap nguyenLieuNhaCungCap = nguyenLieuNhaCungCapDAO.luuNguyenLieu(new NguyenLieuNhaCungCap("Dầu thơm bưởi Việt Nam", 1));
     assertEquals("Dầu thơm bưởi Việt Nam", nguyenLieuNhaCungCap.getNguyenLieu().getTen());
     assertEquals(Integer.valueOf(1), nguyenLieuNhaCungCap.getNhaCungCap().getId());
     assertEquals(true, nguyenLieuDAOTest.deleteById(nguyenLieuNhaCungCap.getId()));

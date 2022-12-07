@@ -10,6 +10,10 @@ public class NguyenLieu {
   public NguyenLieu() {
   }
 
+  public NguyenLieu(String ten) {
+    this.ten = ten;
+  }
+
   public NguyenLieu(Integer id, String ten) {
     this.id = id;
     this.ten = ten;

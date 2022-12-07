@@ -13,8 +13,6 @@ public class NhanVienDAOImpl extends DAO implements NhanVienDAO {
   private String SELECT_NHANVIEN = "SELECT ttv.taiKhoan, ttv.id, ttv.ten FROM tblNhanVien tnv INNER JOIN tblThanhVien ttv ON tnv.idTblThanhVien = ttv.id " +
         "WHERE ttv.taiKhoan = ? AND ttv.matKhau = ? ";
 
-  private String SELECT_NHANVIEN_INFO = "SELECT * FROM tblNhanVien tnv INNER JOIN tblThanhVien ttv ON tnv.idTblThanhVien = ttv.id " +
-        "WHERE ttv.taiKhoan = ? ";
 
   public NhanVienDAOImpl() {
     super();

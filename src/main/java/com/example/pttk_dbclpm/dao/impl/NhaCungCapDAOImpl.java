@@ -51,6 +51,33 @@ public class NhaCungCapDAOImpl extends DAO implements NhaCungCapDAO {
     return nhaCungCaps;
   }
 
+  public List<NhaCungCap> list(NhaCungCap nhaCungCapInput) {
+    String name = nhaCungCapInput.getTen();
+    Connection conn = null;
+    List<NhaCungCap> nhaCungCaps = new ArrayList<>();
+    try {
+      conn = super.connection;
+      conn.setAutoCommit(false);
+
+      PreparedStatement preparedStatement = conn.prepareStatement(Objects.nonNull(name) ? SELECT_LIST : SELECT_ALL);
+      if (Objects.nonNull(name)) preparedStatement.setString(1, "%" + name + "%");
+      ResultSet rs = preparedStatement.executeQuery();
+
+      while (rs.next()) {
+        NhaCungCap nhaCungCap = new NhaCungCap(
+              rs.getInt("id"),
+              rs.getString("ten"),
+              rs.getString("diaChi"),
+              rs.getString("sdt")
+        );
+        nhaCungCaps.add(nhaCungCap);
+      }
+
+    } catch (SQLException e) {
+      throw new RuntimeException(e);
+    }
+    return nhaCungCaps;
+  }
 
   public NhaCungCap luuNcc(NhaCungCap nhaCungCap) throws SQLException {
     Connection conn = null;

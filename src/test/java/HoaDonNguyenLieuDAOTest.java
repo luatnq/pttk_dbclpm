@@ -1,7 +1,9 @@
 import com.example.pttk_dbclpm.dao.HoaDonNguyenLieuDAO;
 import com.example.pttk_dbclpm.dao.NguyenLieuDAO;
+import com.example.pttk_dbclpm.dao.NguyenLieuNhaCungCapDAO;
 import com.example.pttk_dbclpm.dao.impl.HoaDonNguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
+import com.example.pttk_dbclpm.dao.impl.NguyenLieuNhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.entity.HoaDonNguyenLieu;
 import com.example.pttk_dbclpm.entity.NguyenLieu;
 import com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap;
@@ -23,6 +25,7 @@ public class HoaDonNguyenLieuDAOTest {
   private NguyenLieuDAO nguyenLieuDAO = new NguyenLieuDAOImpl();
   private NguyenLieuDAOTest nguyenLieuDAOTest = new NguyenLieuDAOImplTest();
   private dao.HoaDonNguyenLieuDAOTest hoaDonNguyenLieuDAOTest = new HoaDonNguyenLieuDAOImplTest();
+  private NguyenLieuNhaCungCapDAO nguyenLieuNhaCungCapDAO = new NguyenLieuNhaCungCapDAOImpl();
 
   /**
    * Lưu hóa đơn với những thông tin nguyên liệu đã nhập
@@ -50,13 +53,13 @@ public class HoaDonNguyenLieuDAOTest {
           nguyenLieus
     );
 
-    List<NguyenLieu> nguyenLieuListExist = nguyenLieuDAO.list(new NguyenLieuNhaCungCap("Sơn móng tay", 1));
+    List<NguyenLieuNhaCungCap> nguyenLieuListExist = nguyenLieuNhaCungCapDAO.list(new NguyenLieuNhaCungCap("Sơn móng tay", 1));
 
     HoaDonNguyenLieu hoaDonNguyenLieu = hoaDonNguyenLieuDAO.luuHoaDon(hoaDonNguyenLieuInput);
     assertNotNull(hoaDonNguyenLieu.getId());
     assertEquals(tongTien, hoaDonNguyenLieu.getTongTien());
 
-    List<NguyenLieu> nguyenLieuListFetch = nguyenLieuDAO.list(new NguyenLieuNhaCungCap("Sơn móng tay", 1));
+    List<NguyenLieuNhaCungCap> nguyenLieuListFetch = nguyenLieuNhaCungCapDAO.list(new NguyenLieuNhaCungCap("Sơn móng tay", 1));
 
     Integer soLuongFetch = nguyenLieuListExist.get(0).getSoLuong() + nguyenLieuNhaCungCap.getSoLuong();
     assertEquals(soLuongFetch, nguyenLieuListFetch.get(0).getSoLuong());

@@ -32,25 +32,28 @@
                             " type="button" class="btn-close p-2" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="title-modal-body">Nhập thông tin nguyên liệu</div>
-                <form action="<%=request.getContextPath()%>/nls_pick" method="post">
+                <form action="<%=request.getContextPath()%>/nls_pick" method="get" onsubmit="return validateEnterMaterial()" name="enterProduct">
                     <div style="padding: 20px 0;">
                         <b-row class="mb-5">
                             <div>
                                 <label for="productNameEnter" class="form-label">Tên nguyên liệu<span style="color: red;">*</span></label>
                                 <input type="text" required class="form-control" id="productNameEnter"
-                                       name="productNameEnter" placeholder="Name...">
+                                       name="productNameEnter" placeholder="Tên...">
+                                <p class="mb-0" id="err-name" style="color: red;"></p>
                             </div>
                         </b-row>
                         <b-row style="display: flex; justify-content: space-between; margin:24px 0;">
                             <div style="width: 48%;">
                                 <label for="productNumber" class="form-label">Số lượng<span style="color: red;">*</span></label>
                                 <input type="text" required class="form-control" id="productNumber"
-                                       name="productNumber" placeholder="Number...">
+                                       name="productNumber" placeholder="Số lượng...">
+                                <p class="mb-0" id="err-number" style="color: red;"></p>
                             </div>
                             <div style="width: 48%;">
                                 <label for="productPrice" class="form-label">Đơn giá(VNĐ)<span style="color: red;">*</span></label>
                                 <input type="text" required class="form-control" id="productPrice"
-                                       name="productPrice" placeholder="Price...">
+                                       name="productPrice" placeholder="Giá...">
+                                <p class="mb-0" id="err-price" style="color: red;"></p>
                             </div>
                         </b-row>
                     </div>
@@ -60,7 +63,7 @@
                                 style="padding: 8px 20px; border-radius: 10px; width: 150px; margin-right: 20px;"
                                 class="btn btn-outline-secondary">Hủy bỏ
                         </button>
-                        <input type="submit" value="OK" data-bs-dismiss="modal"
+                        <input type="submit" value="OK"
                                onclick="removeTable()"
                                style="padding: 8px 20px; border-radius: 10px; width: 150px"
                                class="btn btn-primary">
@@ -76,10 +79,12 @@
         window.location='<%=request.getContextPath()%>/nls?ncc_id=<%=session.getAttribute(NHA_CUNG_CAP_ID)%>&ncc_name=<%=session.getAttribute(TEN_NHA_CUNG_CAP)%>'
     }
 
-    function validateForm() {
-        let productName = document.forms["form-product"]["product-name"].value;
-        let productNumber = document.forms["form-product"]["product-number"].value;
-        let productPrice = document.forms["form-product"]["product-price"].value;
+    function validateEnterMaterial() {
+        let productName = document.forms["enterProduct"]["productNameEnter"].value;
+        let productNumber = document.forms["enterProduct"]["productNumber"].value;
+        let productPrice = document.forms["enterProduct"]["productPrice"].value;
+
+        console.log(productName)
         if (productName == "") {
             document.querySelector("#err-name").innerHTML = "Tên nguyên liệu không được để trống";
             return false;
@@ -97,7 +102,7 @@
             return false;
         }
         if (productPrice < 0) {
-            document.querySelector("#err-number").innerHTML = "Giá không thể âm";
+            document.querySelector("#err-price").innerHTML = "Giá không thể âm";
             return false;
         }
     }

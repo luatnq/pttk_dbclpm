@@ -1,13 +1,7 @@
 package com.example.pttk_dbclpm.servlet;
 
-import com.example.pttk_dbclpm.dao.HoaDonNguyenLieuDAO;
-import com.example.pttk_dbclpm.dao.NguyenLieuDAO;
-import com.example.pttk_dbclpm.dao.NhaCungCapDAO;
-import com.example.pttk_dbclpm.dao.NhanVienDAO;
-import com.example.pttk_dbclpm.dao.impl.HoaDonNguyenLieuDAOImpl;
-import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
-import com.example.pttk_dbclpm.dao.impl.NhaCungCapDAOImpl;
-import com.example.pttk_dbclpm.dao.impl.NhanVienDAOImpl;
+import com.example.pttk_dbclpm.dao.*;
+import com.example.pttk_dbclpm.dao.impl.*;
 import com.example.pttk_dbclpm.entity.*;
 import com.example.pttk_dbclpm.utils.JsonHelper;
 import jakarta.servlet.RequestDispatcher;
@@ -32,6 +26,7 @@ public class ControllerServlet extends HttpServlet {
   private NhaCungCapDAO nhaCungCapDAO = new NhaCungCapDAOImpl();
   private NguyenLieuDAO nguyenLieuDAO = new NguyenLieuDAOImpl();
   private HoaDonNguyenLieuDAO hoaDonNguyenLieuDAO = new HoaDonNguyenLieuDAOImpl();
+  private NguyenLieuNhaCungCapDAO nguyenLieuNhaCungCapDAO = new NguyenLieuNhaCungCapDAOImpl();
 
   @Override
   protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -87,8 +82,8 @@ public class ControllerServlet extends HttpServlet {
   }
 
   private void login(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String username = request.getParameter("username");
-    String password = request.getParameter("password");
+    String username = request.getParameter("username").trim();
+    String password = request.getParameter("password").trim();
     NhanVien nhanVien = nhanVienDAO.login(new NhanVien(username, password));
     if (Objects.nonNull(nhanVien)) {
       HttpSession session = request.getSession();
@@ -105,8 +100,8 @@ public class ControllerServlet extends HttpServlet {
   }
 
   private void showNhaCungCapList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String nameSearch = request.getParameter("name");
-    List<NhaCungCap> nhaCungCaps = nhaCungCapDAO.list(nameSearch);
+    String nameSearch = request.getParameter("name").trim();
+    List<NhaCungCap> nhaCungCaps = nhaCungCapDAO.list(new NhaCungCap(nameSearch));
     List<NguyenLieuNhaCungCap> nguyenLieus = new ArrayList<>();
     request.setAttribute(NHA_CUNG_CAP_LIST, nhaCungCaps);
     HttpSession session = request.getSession();
@@ -117,9 +112,9 @@ public class ControllerServlet extends HttpServlet {
 
   private void luuNcc(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     try {
-      String ten = request.getParameter("producerName");
-      String diaChi = request.getParameter("producerAddress");
-      String sdt = request.getParameter("producerPhone");
+      String ten = request.getParameter("producerName").trim();
+      String diaChi = request.getParameter("producerAddress").trim();
+      String sdt = request.getParameter("producerPhone").trim();
 
       NhaCungCap nhaCungCapInput = new NhaCungCap(ten, diaChi, sdt);
       NhaCungCap nhaCungCap = nhaCungCapDAO.luuNcc(nhaCungCapInput);
@@ -133,8 +128,8 @@ public class ControllerServlet extends HttpServlet {
   }
 
   private void showNguyenLieuList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    String nccIdStr = request.getParameter("ncc_id");
-    String nccName = request.getParameter("ncc_name");
+    String nccIdStr = request.getParameter("ncc_id").trim();
+    String nccName = request.getParameter("ncc_name").trim();
     HttpSession session = request.getSession();
     Integer nccId = Objects.nonNull(nccIdStr) ? Integer.parseInt(request.getParameter("ncc_id")) :
           (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
@@ -143,9 +138,9 @@ public class ControllerServlet extends HttpServlet {
     }
     session.removeAttribute(NHA_CUNG_CAP_ID);
 
-    List<NguyenLieu> nguyenLieus = nguyenLieuDAO.list(new NguyenLieuNhaCungCap(request.getParameter("name"), nccId));
-    request.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
-    session.setAttribute(NGUYEN_LIEU_LIST, nguyenLieus);
+    List<NguyenLieuNhaCungCap> nguyenLieuNhaCungCaps = nguyenLieuNhaCungCapDAO.list(new NguyenLieuNhaCungCap(request.getParameter("name"), nccId));
+    request.setAttribute(NGUYEN_LIEU_LIST, nguyenLieuNhaCungCaps);
+    session.setAttribute(NGUYEN_LIEU_LIST, nguyenLieuNhaCungCaps);
     session.setAttribute(NHA_CUNG_CAP_ID, nccId);
     request.getRequestDispatcher("GdDanhSachNL.jsp").forward(request, response);
   }
@@ -158,7 +153,7 @@ public class ControllerServlet extends HttpServlet {
     String tenNguyenLieu = request.getParameter("productNameEnter");
     Integer soLuongNguyenLieu = Integer.valueOf(request.getParameter("productNumber").trim());
     Integer donGiaNguyenLieu = Integer.valueOf(request.getParameter("productPrice").trim());
-    Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(tenNguyenLieu.trim());
+    Integer idNguyenLieu = nguyenLieuDAO.getIdNguyenLieu(new NguyenLieu(tenNguyenLieu.trim()));
     Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
     String tenNcc = (String) session.getAttribute(TEN_NHA_CUNG_CAP);
     nguyenLieus.add(new NguyenLieuNhaCungCap(
@@ -182,7 +177,7 @@ public class ControllerServlet extends HttpServlet {
       HttpSession session = request.getSession();
       Integer nccId = (Integer) session.getAttribute(NHA_CUNG_CAP_ID);
       String productName = request.getParameter("productNewName").trim();
-      NguyenLieuNhaCungCap nguyenLieu = nguyenLieuDAO.luuNguyenLieu(productName, nccId);
+      NguyenLieuNhaCungCap nguyenLieu = nguyenLieuNhaCungCapDAO.luuNguyenLieu(new NguyenLieuNhaCungCap(productName, nccId));
       if (Objects.isNull(nguyenLieu)) pushMessage(FAIL, FAIL_CONTENT, request);
       else pushMessage(SUCCESS, SUCCESS_CONTENT, request);
       showNguyenLieuList(request, response);
@@ -198,10 +193,10 @@ public class ControllerServlet extends HttpServlet {
       NhanVien nhanVien = (NhanVien) session.getAttribute(NHAN_VIEN_LOGIN);
       List<NguyenLieuNhaCungCap> nguyenLieus = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
 
-      if (nguyenLieus.size() == 0){
+      if (nguyenLieus.size() == 0) {
         pushMessage(FAIL, "Lưu hóa đơn không thành công", request);
         showNguyenLieuList(request, response);
-      }else{
+      } else {
         HoaDonNguyenLieu hoaDonNguyenLieu = new HoaDonNguyenLieu(
               nhanVien.getId(),
               nhanVien.getTen(),

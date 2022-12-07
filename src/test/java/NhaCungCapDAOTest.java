@@ -19,7 +19,7 @@ public class NhaCungCapDAOTest {
   @Test
   public void searchTestCase1() {
     String tenNhaCungCap = "Long hải";
-    List<NhaCungCap> nhaCungCapList = nhaCungCapDAO.list(tenNhaCungCap);
+    List<NhaCungCap> nhaCungCapList = nhaCungCapDAO.list(new NhaCungCap(tenNhaCungCap));
     assertEquals(tenNhaCungCap, nhaCungCapList.get(0).getTen());
   }
 
@@ -29,7 +29,7 @@ public class NhaCungCapDAOTest {
   @Test
   public void searchTestCase2() {
     String tenNhaCungCap = "Long hải dương";
-    List<NhaCungCap> nhaCungCapList = nhaCungCapDAO.list(tenNhaCungCap);
+    List<NhaCungCap> nhaCungCapList = nhaCungCapDAO.list(new NhaCungCap(tenNhaCungCap));
     assertEquals(0, nhaCungCapList.size());
   }
 
@@ -38,7 +38,7 @@ public class NhaCungCapDAOTest {
    */
   @Test
   public void searchTestCase3() {
-    List<NhaCungCap> nhaCungCapList = nhaCungCapDAO.list(null);
+    List<NhaCungCap> nhaCungCapList = nhaCungCapDAO.list(new NhaCungCap());
     assertNotEquals(0, nhaCungCapList.size());
   }
 

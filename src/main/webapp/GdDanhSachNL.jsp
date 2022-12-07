@@ -45,7 +45,7 @@
                     <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home">Nhập nguyên liệu</a></li>
                     <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/nccs">Danh sách nhà cung cấp</a>
                     </li>
-                    <li class="breadcrumb-item active"><a href="#">Danh sách nguyên liệu</a></li>
+                    <li class="breadcrumb-item active"><a href="<%=request.getContextPath()%>/nls?ncc_id=<%=session.getAttribute(NHA_CUNG_CAP_ID)%>&ncc_name=<%=session.getAttribute(TEN_NHA_CUNG_CAP)%>">Danh sách nguyên liệu</a></li>
                 </ol>
             </nav>
             <button type="button" class="btn" style="padding: 0px;">
@@ -59,7 +59,7 @@
 </div>
 <div class="d-flex px-5 justify-content-around mb-4 mt-4" style="color: #2563EB;">
     <h4 class="px-5" style="">
-        <%= "Danh sách nguyên liệu đã nhập tại nhà cung cấp " + session.getAttribute(TEN_NHA_CUNG_CAP)%>
+        <%= "Danh sách nguyên liệu đã nhập thuộc nhà cung cấp " + session.getAttribute(TEN_NHA_CUNG_CAP)%>
     </h4>
     <h4 style="">
         Danh sách nguyên liệu đã nhập
@@ -86,7 +86,7 @@
 </div>
 
 <%
-    List<NguyenLieu> nguyenLieuList = (List<NguyenLieu>) session.getAttribute(NGUYEN_LIEU_LIST);
+    List<NguyenLieuNhaCungCap> nguyenLieuList = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_LIST);
     session.removeAttribute(NGUYEN_LIEU_LIST);
     List<NguyenLieuNhaCungCap> nguyenLieuNhaCungCaps = (List<NguyenLieuNhaCungCap>) session.getAttribute(NGUYEN_LIEU_DA_CHON);
 %>
@@ -114,12 +114,12 @@
             <tbody class="table-content">
             <%
                 int i = 1;
-                for (NguyenLieu nguyenLieu : nguyenLieuList) {
+                for (NguyenLieuNhaCungCap nguyenLieu : nguyenLieuList) {
             %>
-            <tr onclick="showModalEnter(this)" id="<%=nguyenLieu.getTen()%>">
+            <tr onclick="showModalEnter(this)" id="<%=nguyenLieu.getNguyenLieu().getTen()%>">
                 <th class="text-center"><%=i++%>
                 </th>
-                <td class="nr" style="text-align: left;"><%=nguyenLieu.getTen()%>
+                <td class="nr" style="text-align: left;"><%=nguyenLieu.getNguyenLieu().getTen()%>
                 </td>
                 <td style="text-align: end;"><%=nguyenLieu.getSoLuong()%>
                 </td>

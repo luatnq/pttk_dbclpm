@@ -53,7 +53,8 @@
                     <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home">Trang chủ</a></li>
                     <li class="breadcrumb-item"><a href="<%=request.getContextPath()%>/home">Nhập nguyên liệu</a>
                     </li>
-                    <li class="breadcrumb-item active"><a href="#">Danh sách nhà cung cấp</a></li>
+                    <li class="breadcrumb-item active"><a href="<%=request.getContextPath()%>/nccs">Danh sách nhà cung
+                        cấp</a></li>
                 </ol>
             </nav>
             <button type="button" class="btn" style="padding: 0px;">
@@ -103,39 +104,40 @@
                         + Thêm mới
                     </button>
                 </div>
+                <div class="custom-scroll-bar mb-4" style="height: 400px !important; overflow-y: scroll;">
+                    <table class="table table-striped">
+                        <thead class="header-table">
+                        <tr>
+                            <th scope="col" class="text-center">STT</th>
+                            <th scope="col" class="text-left">Tên Nhà cung cấp</th>
+                            <th scope="col" class="text-left">Số điện thoại</th>
+                            <th scope="col" class="text-end">Địa chỉ</th>
+                            <th scope="col" class="text-end"></th>
+                        </tr>
+                        </thead>
 
-                <table class="table table-striped">
-                    <thead class="header-table">
-                    <tr>
-                        <th scope="col" class="text-center">STT</th>
-                        <th scope="col" class="text-left">Tên Nhà cung cấp</th>
-                        <th scope="col" class="text-left">Số điện thoại</th>
-                        <th scope="col" class="text-end">Địa chỉ</th>
-                        <th scope="col" class="text-end"></th>
-                    </tr>
-                    </thead>
-
-                    <tbody class="table-content">
-                    <%
-                        int i = 1;
-                        for (NhaCungCap nhaCungCap : nhaCungCaps) {
-                    %>
-                    <tr onclick="window.location='<%=request.getContextPath()%>/nls?ncc_id=<%=nhaCungCap.getId()%>&ncc_name=<%=nhaCungCap.getTen()%>'">
-                        <th class="text-center"><%=i++%>
-                        </th>
-                        <td class="text-left"><%=nhaCungCap.getTen()%>
-                        </td>
-                        <td class="text-left"><%=nhaCungCap.getSdt()%>
-                        </td>
-                        <td class="text-end"><%=nhaCungCap.getDiaChi()%>
-                        </td>
-                        <th scope="col" class="text-end"></th>
-                    </tr>
-                    <%
-                        }
-                    %>
-                    </tbody>
-                </table>
+                        <tbody class="table-content">
+                        <%
+                            int i = 1;
+                            for (NhaCungCap nhaCungCap : nhaCungCaps) {
+                        %>
+                        <tr onclick="window.location='<%=request.getContextPath()%>/nls?ncc_id=<%=nhaCungCap.getId()%>&ncc_name=<%=nhaCungCap.getTen()%>'">
+                            <th class="text-center"><%=i++%>
+                            </th>
+                            <td class="text-left"><%=nhaCungCap.getTen()%>
+                            </td>
+                            <td class="text-left"><%=nhaCungCap.getSdt()%>
+                            </td>
+                            <td class="text-end"><%=nhaCungCap.getDiaChi()%>
+                            </td>
+                            <th scope="col" class="text-end"></th>
+                        </tr>
+                        <%
+                            }
+                        %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

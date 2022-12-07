@@ -77,6 +77,7 @@
                             Hủy bỏ
                         </button>
                         <input type="submit" value="Ok"
+                               onclick="loadPage()"
                                style="padding: 8px 20px; border-radius: 10px; width: 30%"
                                class="btn btn-primary">
                     </div>
@@ -93,6 +94,10 @@
         // $("#footer").load("../../footer.html");
         // document.getElementById('search-null').style.display = 'none';
     });
+
+    const loadPage = () => {
+        window.location='<%=request.getContextPath()%>/nccs'
+    }
 
     function validateForm() {
         let producerName = document.forms["addProduct"]["producerName"].value;
