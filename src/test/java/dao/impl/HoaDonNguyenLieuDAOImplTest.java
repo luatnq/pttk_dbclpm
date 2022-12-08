@@ -1,18 +1,11 @@
 package dao.impl;
 
 import com.example.pttk_dbclpm.dao.DAO;
-import com.example.pttk_dbclpm.entity.HoaDonNguyenLieu;
-import com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap;
 import dao.HoaDonNguyenLieuDAOTest;
-import dao.NguyenLieuDAOTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.example.pttk_dbclpm.constant.Constant.Web.NGUYEN_LIEU_DA_CHON;
 
 public class HoaDonNguyenLieuDAOImplTest extends DAO implements HoaDonNguyenLieuDAOTest {
   String DELETE_BY_ID = "DELETE FROM tblHoaDonNguyenLieu hoaDon WHERE hoaDon.idTblHoaDon = ?";

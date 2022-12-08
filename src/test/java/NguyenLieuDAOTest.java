@@ -4,7 +4,8 @@ import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NguyenLieuNhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.entity.NguyenLieu;
 import com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap;
-import dao.impl.NguyenLieuDAOImplTest;
+import dao.NguyenLieuNhaCungCapDAOTest;
+import dao.impl.NguyenLieuNhaCungCapDAOImplTest;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ public class NguyenLieuDAOTest {
 
   private NguyenLieuNhaCungCapDAO nguyenLieuNhaCungCapDAO = new NguyenLieuNhaCungCapDAOImpl();
   private NguyenLieuDAO nguyenLieuDAO = new NguyenLieuDAOImpl();
-  private dao.NguyenLieuDAOTest nguyenLieuDAOTest = new NguyenLieuDAOImplTest();
+  private NguyenLieuNhaCungCapDAOTest nguyenLieuDAOTest = new NguyenLieuNhaCungCapDAOImplTest();
 
   /**
    * Lấy danh sách nguyên liệu của 1 nhà cung cấp với ID nhà cung cấp bằng 1

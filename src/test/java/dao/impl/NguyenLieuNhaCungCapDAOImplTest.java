@@ -1,14 +1,14 @@
 package dao.impl;
 
 import com.example.pttk_dbclpm.dao.DAO;
-import dao.NguyenLieuDAOTest;
+import dao.NguyenLieuNhaCungCapDAOTest;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class NguyenLieuDAOImplTest extends DAO implements NguyenLieuDAOTest {
-  public NguyenLieuDAOImplTest() {
+public class NguyenLieuNhaCungCapDAOImplTest extends DAO implements NguyenLieuNhaCungCapDAOTest {
+  public NguyenLieuNhaCungCapDAOImplTest() {
     super();
   }
 

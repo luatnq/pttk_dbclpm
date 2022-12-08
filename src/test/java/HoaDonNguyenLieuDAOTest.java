@@ -5,11 +5,10 @@ import com.example.pttk_dbclpm.dao.impl.HoaDonNguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NguyenLieuDAOImpl;
 import com.example.pttk_dbclpm.dao.impl.NguyenLieuNhaCungCapDAOImpl;
 import com.example.pttk_dbclpm.entity.HoaDonNguyenLieu;
-import com.example.pttk_dbclpm.entity.NguyenLieu;
 import com.example.pttk_dbclpm.entity.NguyenLieuNhaCungCap;
-import dao.NguyenLieuDAOTest;
+import dao.NguyenLieuNhaCungCapDAOTest;
 import dao.impl.HoaDonNguyenLieuDAOImplTest;
-import dao.impl.NguyenLieuDAOImplTest;
+import dao.impl.NguyenLieuNhaCungCapDAOImplTest;
 import org.junit.Test;
 
 import java.sql.SQLException;
@@ -23,7 +22,7 @@ public class HoaDonNguyenLieuDAOTest {
 
   private HoaDonNguyenLieuDAO hoaDonNguyenLieuDAO = new HoaDonNguyenLieuDAOImpl();
   private NguyenLieuDAO nguyenLieuDAO = new NguyenLieuDAOImpl();
-  private NguyenLieuDAOTest nguyenLieuDAOTest = new NguyenLieuDAOImplTest();
+  private NguyenLieuNhaCungCapDAOTest nguyenLieuDAOTest = new NguyenLieuNhaCungCapDAOImplTest();
   private dao.HoaDonNguyenLieuDAOTest hoaDonNguyenLieuDAOTest = new HoaDonNguyenLieuDAOImplTest();
   private NguyenLieuNhaCungCapDAO nguyenLieuNhaCungCapDAO = new NguyenLieuNhaCungCapDAOImpl();
 

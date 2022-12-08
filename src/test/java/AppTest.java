@@ -1,8 +1,9 @@
 import com.example.pttk_dbclpm.dao.*;
 import com.example.pttk_dbclpm.dao.impl.*;
 import com.example.pttk_dbclpm.entity.*;
+import dao.NguyenLieuNhaCungCapDAOTest;
 import dao.impl.HoaDonNguyenLieuDAOImplTest;
-import dao.impl.NguyenLieuDAOImplTest;
+import dao.impl.NguyenLieuNhaCungCapDAOImplTest;
 import dao.impl.NhaCungCapDAOImplTest;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ import static org.junit.Assert.*;
 public class AppTest {
 
   private NguyenLieuDAO nguyenLieuDAO = new NguyenLieuDAOImpl();
-  private dao.NguyenLieuDAOTest nguyenLieuDAOTest = new NguyenLieuDAOImplTest();
+  private NguyenLieuNhaCungCapDAOTest nguyenLieuDAOTest = new NguyenLieuNhaCungCapDAOImplTest();
   private HoaDonNguyenLieuDAO hoaDonNguyenLieuDAO = new HoaDonNguyenLieuDAOImpl();
   private dao.HoaDonNguyenLieuDAOTest hoaDonNguyenLieuDAOTest = new HoaDonNguyenLieuDAOImplTest();
   private NhanVienDAO nhanVienDAO = new NhanVienDAOImpl();

@@ -2,7 +2,7 @@ package dao;
 
 import java.sql.SQLException;
 
-public interface NguyenLieuDAOTest {
+public interface NguyenLieuNhaCungCapDAOTest {
 
   boolean deleteById(Integer id) throws SQLException;
 
